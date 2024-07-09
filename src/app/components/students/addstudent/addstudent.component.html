@@ -1,0 +1,83 @@
+<button type="button" class="btn m-2  btn-info" routerLink="/students">< Back </button>
+
+<h2 class="text-center mt-2">Add New Student</h2>
+<div class="d-flex justify-content-center align-items-center w-100 v-100  mt-5">
+
+  <form class="row g-3 w-75 " [formGroup]="studentForm" (ngSubmit)="onSubmit()">
+    <div class="col-md-6">
+      <label for="name" class="form-label">Name <span class="text-danger">*</span></label>
+      <input type="email" class="form-control" id="name" formControlName="name" [ngClass]="{'is-valid':studentForm.controls['name'].valid && studentForm.controls['name'].touched,
+      'is-invalid':studentForm.controls['name'].invalid && studentForm.controls['name'].touched}">
+      <small class="text-danger"
+             *ngIf="studentForm.get('name')?.touched && studentForm.get('name')?.errors?.['required']">Name is
+        required.</small>
+    </div>
+    <div class="col-md-6">
+      <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
+      <input id="email" type="email" formControlName="email" class="form-control" [ngClass]="{'is-valid': studentForm.controls['email'].valid && studentForm.controls['email'].touched,
+                   'is-invalid': studentForm.controls['email'].invalid && studentForm.controls['email'].touched}">
+      <small class="text-danger"
+             *ngIf="studentForm.get('email')?.touched && studentForm.get('email')?.errors?.['required']">Email is
+        required.</small>
+      <small class="text-danger" *ngIf="studentForm.get('email')?.errors?.['email']">Email is invalid.</small>
+    </div>
+    <div class="col-md-6">
+      <label for="photo" class="form-label">Photo <span class="text-danger">*</span></label>
+      <input id="photo" type="file" class="form-control" (change)="onFileSelect($event)"
+             [ngClass]="{'is-valid':studentForm.controls['photo'].valid && studentForm.controls['photo'].touched,
+              'is-invalid':studentForm.controls['photo'].invalid && studentForm.controls['photo'].touched}">
+      <small class="text-danger"
+             *ngIf="studentForm.get('photo')?.touched && studentForm.get('photo')?.errors?.['requiredFile']">{{ studentForm.get('photo')?.errors?.['requiredFile'] }}</small>
+      <small class="text-danger"
+             *ngIf="studentForm.get('photo')?.errors?.['invalidFileType']">{{ studentForm.get('photo')?.errors?.['invalidFileType'] }}</small>
+    </div>
+
+    <div class="col-md-6">
+      <label for="gender" class="form-label"> Gender <span class="text-danger">*</span></label>
+      <select id="gender" formControlName="gender" class="form-control"
+              [ngClass]="{'is-valid':studentForm.controls['gender'].valid && studentForm.controls['gender'].touched,
+              'is-invalid':studentForm.controls['gender'].invalid && studentForm.controls['gender'].touched}">
+
+        <!--      >-->
+        <!--              [ngClass]="{'is-valid':studentForm.controls['gender'].valid} && studentForm.controls['gender'].touched}">              -->
+        <!--              'is-invalid':studentForm.controls['gender'].invalid && studentForm.controls['gender'].touched}">-->
+        <!--        >-->
+        <option value="">Select Gender</option>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+        <option value="others">Others</option>
+      </select>
+      <small class="text-danger"
+             *ngIf="studentForm.get('gender')?.touched && studentForm.get('gender')?.errors?.['required']">Gender is
+        required.</small>
+    </div>
+    <div class="col-12">
+      <div formArrayName="number">
+
+        <div *ngFor="let phoneGroup of number.controls; let i = index" [formGroupName]="i">
+          <label for="phone" class="form-label">Phone Number {{ i + 1 }}
+            <span class="text-danger">*</span>
+          </label>
+          <input id="phone" type="text" class="form-control" formControlName="number"
+                 [ngClass]="{'is-valid':number.at(i).valid && number.at(i).touched,'is-invalid':number.at(i).invalid && number.at(i).touched}"
+          >
+          <small class="text-danger"
+                 *ngIf="number.at(i)?.get('number')?.touched && number.at(i)?.get('number')?.errors?.['required']">Phone
+            number is required.<br></small>
+          <small class="text-danger" *ngIf="number.at(i)?.get('number')?.errors?.['pattern']">Invalid phone
+            number.<br></small>
+          <button type="button" class="btn btn-danger my-2" (click)="removePhoneNumber(i)">Remove</button>
+        </div>
+        <button type="button" class="btn btn-success my-2" (click)="addPhoneNumber()">Add Another Phone Number</button>
+      </div>
+    </div>
+    <div class="col-12 mt-4">
+      <span class="text-danger" *ngIf="errorMessage">{{ errorMessage }}</span>
+      <br>
+      <button type="submit" class="btn btn-primary">
+        Submit
+      </button>
+
+    </div>
+  </form>
+</div>

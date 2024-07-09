@@ -1,4 +1,4 @@
-<nav class="navbar navbar-inverse navbar-expand-lg navbar-light bg-success" *ngIf="showNavbar">
+<nav class="navbar navbar-inverse navbar-expand-lg navbar-light gradient-custom " *ngIf="showNavbar">
   <a class="navbar-brand" routerLink="/all">SMS</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -6,18 +6,15 @@
   <div class="collapse navbar-collapse" id="navbarText">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item ">
-        <a class="nav-link" routerLinkActive="active" routerLink="/all">All</a>
+        <a class="nav-link" routerLinkActive="active" routerLink="/students">Students</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" routerLinkActive="active" routerLink="/remaining">Remaining</a>
+        <a class="nav-link" routerLinkActive="active" routerLink="/exams">Exams</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" routerLinkActive="active" routerLink="/done">Done</a>
-      </li>
+<!--      <li class="nav-item">-->
+<!--        <a class="nav-link" routerLinkActive="active" routerLink="/done">Done</a>-->
+<!--      </li>-->
     </ul>
   </div>
-</nav>
-<router-outlet></router-outlet>
-<nav class="navbar navbar-inverse navbar-expand-lg navbar-light bg-success" *ngIf="showNavbar">
 </nav>
 <router-outlet></router-outlet>

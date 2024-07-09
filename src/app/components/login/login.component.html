@@ -1,0 +1,57 @@
+<!--<p>login works!</p>-->
+<!--<p>Form Status: {{ loginForm.status }}</p>-->
+<!--<form [formGroup]="loginForm" (submit)="onLogin()">-->
+<!--  <input type="email" formControlName="email"  name="email" required>-->
+<!--  <input type="password" formControlName="password" name="password" required>-->
+<!--&lt;!&ndash;  {{email.value}}&ndash;&gt;-->
+<!--&lt;!&ndash;  <button type="submit" >Login</button>&ndash;&gt;-->
+<!--  <button type="submit" [disabled]="!loginForm.valid">Submit</button>-->
+<!--</form>-->
+<!--<div class="centered-alert mt-2" *ngIf="errorMessage">-->
+<!--    <div class="alert alert-danger " role="alert">-->
+<!--      {{ errorMessage }}-->
+<!--    </div>-->
+<!--</div>-->
+<div class="centered-alert mt-3" *ngIf="errorMessage && showError">
+  <div class="alert alert-danger" role="alert">
+    {{ errorMessage }}
+    <button type="button" class="close" aria-label="Close" (click)="hideErrorMessage()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+</div>
+<section class="vh-100 gradient-custom">
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+        <div class="card bg-dark text-white" style="border-radius: 1rem;">
+          <div class="card-body p-5 text-center">
+            <form [formGroup]="loginForm" (submit)="onLogin()" class="md-5 md-4">
+              <h2 class="fw-bold mb-1 text-uppercase">Login</h2>
+              <p class="text-white-50 mb-2">Please enter your login and password!</p>
+<!--              <div class="mb-3 text-danger text-exception">-->
+<!--  <span *ngIf="errorMessage">-->
+<!--    Error: {{ errorMessage }}-->
+<!--  </span>-->
+<!--              </div>-->
+
+              <div data-mdb-input-init class="form-outline form-white mb-4">
+                <input type="email" id="typeEmailX" class="form-control form-control-lg" formControlName="email"/>
+                <label class="form-label" for="typeEmailX">Email</label>
+              </div>
+              <div data-mdb-input-init class="form-outline form-white mb-4">
+                <input type="password" id="typePasswordX" class="form-control form-control-lg"
+                       formControlName="password"/>
+                <label class="form-label" for="typePasswordX">Password</label>
+              </div>
+              <button data-mdb-button-init data-mdb-ripple-init class="btn btn-outline-light btn-lg px-5" type="submit"
+              >
+                Login
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

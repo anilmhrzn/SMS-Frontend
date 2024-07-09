@@ -1,0 +1,49 @@
+<!--<button type="button" class="btn m-2  btn-info" routerLink="/students">< Back</button>-->
+<button type="button" class="btn m-2  btn-info" routerLink="/students/add">Add existing student to my record</button>
+<!--<p class="ml-2">you can add student from your subject from this list</p>-->
+<!---->
+<div class=" w-100 d-flex justify-content-center align-items-center mt-5">
+  <table class="table w-75 table-hover" *ngIf="students.length">
+    <thead>
+    <tr class="gradient-custom">
+      <th scope="col">studentId</th>
+      <th scope="col">Name</th>
+      <th scope="col">Email</th>
+      <th scope="col">Phone</th>
+
+<!--      <th scope="col">Options</th>-->
+    </tr>
+    </thead>
+    <tbody class="table-group-divider">
+    <tr *ngFor="let student of students">
+      <th scope="row">{{ student.id }}</th>
+      <td>{{ student.name }}</td>
+      <td>{{ student.email }}</td>
+      <td>
+        <div *ngFor="let phone of student.number">
+          {{ phone }}<br>
+
+
+        </div>
+      </td>
+<!--      <td>-->
+<!--        <button type="button" class="btn m-2  btn-info" routerLink="/students">Add to my subject</button>-->
+<!--      </td>-->
+    </tr>
+
+    </tbody>
+  </table>
+</div>
+<!--TODO do this-->
+<div class="w-100 d-flex justify-content-center">
+  <div *ngIf="students.length" class="pagination">
+    <button class="page-link" (click)="loadStudents(page - limit, limit)" [disabled]="page <= 0">Previous</button>
+    <button class="page-link" (click)="loadStudents(page + limit, limit)" [disabled]="page * limit >= total">Next
+    </button>
+  </div>
+</div>
+
+<div *ngIf="!students.length && !errorMessage">
+  No students found.
+</div>
+

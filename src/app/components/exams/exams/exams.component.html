@@ -1,0 +1,19 @@
+<div class=" w-100 d-flex justify-content-center align-items-center mt-5">
+  <table class="table w-75 table-hover" *ngIf="exams.length">
+    <thead>
+    <tr class="gradient-custom">
+      <th scope="col">studentId</th>
+      <th scope="col">Name</th>
+      <th scope="col">date</th>
+      <th scope="col">subject</th>
+    </tr>
+    </thead>
+    <tbody class="table-group-divider">
+    <tr *ngFor="let exam of exams">
+      <th scope="row">{{ exam.id }}</th>
+      <td>{{ exam.name }}</td>
+      <td>{{ exam.date }}</td>
+      <td>{{ exam.subject }}</td>
+    </tbody>
+  </table>
+</div>

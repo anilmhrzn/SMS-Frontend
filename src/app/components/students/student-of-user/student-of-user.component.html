@@ -1,0 +1,61 @@
+<!--<nav aria-label="breadcrumb">-->
+<!--  <ol class="breadcrumb">-->
+<!--    <li class="breadcrumb-item active" aria-current="page">Home</li>-->
+<!--  </ol>-->
+<!--</nav>-->
+
+<!--<nav aria-label="breadcrumb">-->
+<!--  <ol class="breadcrumb">-->
+<!--    <li class="breadcrumb-item"><a href="#">Home</a></li>-->
+<!--    <li class="breadcrumb-item active" aria-current="page">Library</li>-->
+<!--  </ol>-->
+<!--</nav>-->
+
+<!--<nav aria-label="breadcrumb">-->
+<!--  <ol class="breadcrumb">-->
+<!--    <li class="breadcrumb-item"><a href="#">Home</a></li>-->
+<!--    <li class="breadcrumb-item"><a href="#">Library</a></li>-->
+<!--    <li class="breadcrumb-item active" aria-current="page">Data</li>-->
+<!--  </ol>-->
+<!--</nav>-->
+<button type="button" class="btn m-2  btn-info" routerLink="/students/add">Add new student in my subject</button>
+<button type="button" class="btn m-2  btn-info" routerLink="/students/allstudents">Show all students of the record</button>
+<div class=" w-100 d-flex justify-content-center align-items-center mt-5">
+  <table class="table w-75 table-hover" *ngIf="students.length">
+    <thead>
+    <tr class="gradient-custom">
+      <th scope="col">studentId</th>
+      <th scope="col">Name</th>
+      <th scope="col">Email</th>
+      <th scope="col">Phone</th>
+    </tr>
+    </thead>
+    <tbody class="table-group-divider">
+    <tr *ngFor="let student of students">
+      <th scope="row">{{ student.id }}</th>
+      <td>{{ student.name }}</td>
+      <td>{{ student.email }}</td>
+      <td>
+        <div *ngFor="let phone of student.number">
+          {{ phone }}<br>
+
+
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+<!--TODO do this-->
+<div class="w-100 d-flex justify-content-center">
+  <div *ngIf="students.length" class="pagination">
+    <button class="page-link" (click)="loadUsersStudents(page - limit, limit)" [disabled]="page <= 0">Previous</button>
+    <button class="page-link" (click)="loadUsersStudents(page + limit, limit)" [disabled]="page==0 ?  limit:page*limit >= total">Next
+    </button>
+  </div>
+</div>
+
+<div *ngIf="!students.length && !errorMessage">
+  No students found.
+</div>
+
