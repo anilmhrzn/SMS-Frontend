@@ -12,15 +12,39 @@
 <!--      {{ errorMessage }}-->
 <!--    </div>-->
 <!--</div>-->
-<div class="centered-alert mt-3" *ngIf="errorMessage && showError">
-  <div class="alert alert-danger" role="alert">
-    {{ errorMessage }}
-    <button type="button" class="close" aria-label="Close" (click)="hideErrorMessage()">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-</div>
+<!--<c-alert class="absolute" *ngIf="showAlert" [color]="'success'">{{alertMessage}}</c-alert>-->
+<!--<div *ngIf="showAlert" @alertAnimation class="alert alert-success" role="alert">-->
+<!--  {{ alertMessage }}-->
+<!--  <button type="button" class="close" aria-label="Close" (click)="hideAlert()">-->
+<!--    <span aria-hidden="true">&times;</span>-->
+<!--  </button>-->
+<!--</div>-->
+<!--<div *ngIf="showAlert" class="d-flex justify-content-center w-100">-->
+<!--  <div @alertAnimation class="alert alert-success w-25  " role="alert">-->
+<!--    {{ alertMessage }}-->
+<!--    <button type="button" class="close" aria-label="Close" (click)="hideAlert()">-->
+<!--      <span aria-hidden="true">&times;</span>-->
+<!--    </button>-->
+<!--  </div>-->
+<!--</div>-->
+
+<!--<div class="centered-alert mt-3" *ngIf="errorMessage && showError">-->
+<!--  <div class="alert alert-danger" role="alert">-->
+<!--    {{ errorMessage }}-->
+<!--    <button type="button" class="close" aria-label="Close" (click)="hideErrorMessage()">-->
+<!--      <span aria-hidden="true">&times;</span>-->
+<!--    </button>-->
+<!--  </div>-->
+<!--</div>-->
 <section class="vh-100 gradient-custom">
+  <div *ngIf="showAlert" class="position-absolute {{alertMessage }} d-flex justify-content-center w-100">
+    <div @alertAnimation class="alert alert-success w-25  " role="alert">
+      {{ alertMessage }}
+      <button type="button" class="close" aria-label="Close" (click)="hideAlert()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  </div>
   <div class="container py-5 h-100">
     <div class="row d-flex justify-content-center align-items-center h-100">
       <div class="col-12 col-md-8 col-lg-6 col-xl-5">
@@ -29,11 +53,11 @@
             <form [formGroup]="loginForm" (submit)="onLogin()" class="md-5 md-4">
               <h2 class="fw-bold mb-1 text-uppercase">Login</h2>
               <p class="text-white-50 mb-2">Please enter your login and password!</p>
-<!--              <div class="mb-3 text-danger text-exception">-->
-<!--  <span *ngIf="errorMessage">-->
-<!--    Error: {{ errorMessage }}-->
-<!--  </span>-->
-<!--              </div>-->
+              <!--              <div class="mb-3 text-danger text-exception">-->
+              <!--  <span *ngIf="errorMessage">-->
+              <!--    Error: {{ errorMessage }}-->
+              <!--  </span>-->
+              <!--              </div>-->
 
               <div data-mdb-input-init class="form-outline form-white mb-4">
                 <input type="email" id="typeEmailX" class="form-control form-control-lg" formControlName="email"/>
@@ -55,3 +79,6 @@
     </div>
   </div>
 </section>
+<!--<c-alert *ngIf="showAlert" [variant]="'success'"  class="fade show">-->
+<!--  {{ alertMessage }}-->
+<!--</c-alert>-->

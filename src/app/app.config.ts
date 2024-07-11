@@ -4,9 +4,12 @@ import {provideRouter} from '@angular/router';
 
 import {routes} from './app.routes';
 import {provideHttpClient} from "@angular/common/http";
-import {FormGroup} from "@angular/forms";
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import {MatDialogRef} from "@angular/material/dialog";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 
-export const appConfig: ApplicationConfig = {
-  providers: [provideZoneChangeDetection({eventCoalescing: true}), provideRouter(routes), provideHttpClient()]
+export let appConfig: ApplicationConfig;
+appConfig = {
+  providers: [provideZoneChangeDetection({eventCoalescing: true}), provideRouter(routes), provideHttpClient(), provideAnimationsAsync(), {provide:MatDialogRef,useValue:{}},BrowserAnimationsModule]
 };
