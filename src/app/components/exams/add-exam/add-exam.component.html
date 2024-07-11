@@ -1,0 +1,45 @@
+<button type="button" class="btn m-2  btn-info" routerLink="/exams">< Back</button>
+
+<h2 class="text-center mt-2">Add Exam</h2>
+<div class="d-flex justify-content-center align-items-center w-100 v-100  mt-5">
+
+  <form class="row g-3 w-75 " [formGroup]="ExamForm" (ngSubmit)="onSubmit()">
+    <div class="col-md-6">
+      <label for="name" class="form-label">Name <span class="text-danger">*</span></label>
+      <input type="email" class="form-control" id="name" formControlName="name" [ngClass]="{'is-valid':ExamForm.controls['name'].valid && ExamForm.controls['name'].touched,
+      'is-invalid':ExamForm.controls['name'].invalid && ExamForm.controls['name'].touched}">
+      <small class="text-danger"
+             *ngIf="ExamForm.get('name')?.touched && ExamForm.get('name')?.errors?.['required']">Name is
+        required.</small>
+    </div>
+    <div class="col-md-6">
+      <label for="date" class="form-label">Name <span class="text-danger">*</span></label>
+      <input type="date" class="form-control" id="date" formControlName="date" [ngClass]="{'is-valid':ExamForm.controls['date'].valid && ExamForm.controls['date'].touched,
+      'is-invalid':ExamForm.controls['date'].invalid && ExamForm.controls['date'].touched}">
+      <small class="text-danger"
+             *ngIf="ExamForm.get('date')?.touched && ExamForm.get('date')?.errors?.['required']">date is
+        required.</small>
+    </div>
+    <div class="col-md-6">
+      <label for="subject" class="form-label"> Subject <span class="text-danger">*</span></label>
+      <select id="subject" formControlName="subject" class="form-control"
+              [ngClass]="{'is-valid':ExamForm.controls['subject'].valid && ExamForm.controls['subject'].touched,
+              'is-invalid':ExamForm.controls['subject'].invalid && ExamForm.controls['subject'].touched}">
+        <option value="">Select subject</option>
+        <option *ngFor="let subject of subjects" [value]="subject.id">{{ subject.name }}</option>
+      </select>
+      <small class="text-danger"
+             *ngIf="ExamForm.get('subject')?.touched && ExamForm.get('subject')?.errors?.['required']">subject is
+        required.</small>
+    </div>
+    <div class="col-12 mt-4">
+      <span class="text-danger b-2" *ngIf="errorMessage">{{ errorMessage }}</span>
+      <br>
+      <br>
+
+      <button type="submit" class="btn btn-primary">
+        Submit
+      </button>
+    </div>
+  </form>
+</div>

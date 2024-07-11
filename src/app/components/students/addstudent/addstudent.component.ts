@@ -77,18 +77,14 @@ export class AddstudentComponent {
   onSubmit(): void {
     if (this.studentForm.valid) {
       const token = localStorage.getItem('auth_token');
-      const headers = {'Authorization': `Bearer ${token}`}; // Prepare the headers with the token
-
+      const headers = {'Authorization': `${token}`}; // Prepare the headers with the token
       const phoneNumbers = this.studentForm.value.number.map((phoneGroup: {
         number: string
       }) => Number(phoneGroup.number));
-
-      // Clone the form value to avoid mutating the original value
       const formValue = {...this.studentForm.value, number: phoneNumbers};
-      console.log(formValue.number);
+      // console.log(formValue);
       // return;
-      // console.log( this.studentForm.value)
-
+      // console.log(formValue.number);
       this.http.post('http://localhost:8080/api/student/new',
         formValue,
         {headers})
@@ -105,7 +101,6 @@ export class AddstudentComponent {
     } else {
       this.studentForm.markAllAsTouched(); // Mark all controls as touched to show errors
       this.errorMessage = 'Please fill all required fields correctly.';
-      // this.errorMessage = 'Please fill all required fields correctly.';
 
     }
   }
