@@ -1,0 +1,32 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb bg-transparent">
+    <li class="breadcrumb-item " aria-current="page" >
+      <a routerLink="/exams" href="#">Exams</a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page" >
+      <a routerLink="/exams/add/marks" href="#">Add Marks</a>
+    </li>
+  </ol>
+
+</nav>
+<!--<button type="button" class="btn m-2  btn-info" routerLink="/exams">< Back</button>-->
+<div class="d-flex justify-content-center">
+  <form class="w-75">
+    <label for="formFileLg" class="form-label">Please submit .csv file for adding marks of
+      <strong>{{ examName }}</strong> of Subject
+      <strong>{{ subjectName }}</strong> which was held in <strong>{{ date }}</strong>
+    </label>
+    <input class="form-control form-control-lg" id="formFileLg" type="file" #fileInput/>
+    <button type="button" class="btn btn-success mt-3" (click)="submitForm(fileInput.files)">Submit</button>
+  </form>
+
+</div>
+<div *ngIf="uploadMessage.message || (uploadMessage.error && uploadMessage.error.length > 0)"
+     class="alert alert-danger fixed-bottom" role="alert">
+  <div *ngIf="uploadMessage.message">{{ uploadMessage.message }} but</div>
+  <ul *ngIf="uploadMessage.error && uploadMessage.error.length > 0">
+    <li *ngFor="let error of uploadMessage.error">{{ error.row }}: {{ error.reason }}</li>
+  </ul>
+</div>
+
+

@@ -1,0 +1,48 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb bg-transparent">
+    <li class="breadcrumb-item " aria-current="page">
+      <a routerLink="/exams" href="#">Exams</a>
+    </li>
+    <li class="breadcrumb-item " aria-current="page">
+      <a routerLink="/marks/view/marks" href="#">{{ subjectName }}</a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">
+      <a routerLink="/marks/view/marks" href="#">View Marks</a>
+    </li>
+  </ol>
+
+</nav>
+<p> Exam Name:{{ examName }}<br>Subject Name:{{ subjectName }}<br>Date of Exam:{{ date }}</p>
+<div class="w-100 text-right pr-5 text-danger">
+  No of failed Students:
+  {{ noOfFailedStudents }}
+</div>
+<div class=" w-100 d-flex justify-content-center align-items-center mt-5">
+
+  <table class="table mx-5 table-hover" *ngIf="marks?.length">
+
+    <thead>
+    <tr class="gradient-custom">
+      <th scope="col">studentId</th>
+      <th scope="col">Name</th>
+      <th scope="col">Mark obtained</th>
+    </tr>
+    </thead>
+    <tbody class="table-group-divider">
+    <tr *ngFor="let mark of marks">
+      <th scope="row">{{ mark.student_Id }}</th>
+      <td>{{ mark.student_name }}</td>
+      <td>{{ mark.mark_obtained }}</td>
+    </tr>
+    </tbody>
+  </table>
+  <div *ngIf="!marks?.length" class="border border-warning p-2">
+    <p class="text-danger font-italic">Please add marks for this exam as there is not any marks added</p>
+
+    <button type="button" class="btn   btn-info w-100" routerLink="/exams/add/marks">Add
+      marks
+    </button>
+
+  </div>
+
+</div>

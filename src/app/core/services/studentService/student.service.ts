@@ -11,19 +11,21 @@ export class StudentService {
   constructor(private http: HttpClient) {}
 
   getStudents(page: number = 0, limit: number = 10): Observable<StudentList> {
-    const token = localStorage.getItem('auth_token'); // Retrieve the token
-    const headers = { 'Authorization': `Bearer ${token}` }; // Prepare the headers
+    // const token = localStorage.getItem('auth_token'); // Retrieve the token
+    // const headers = { 'Authorization': `Bearer ${token}` }; // Prepare the headers
     const queryParams = `?page=${page}&limit=${limit}`;
-    return this.http.get<StudentList>(`${this.apiUrl}/students${queryParams}`, { headers })
+    console.log('l')
+    return this.http.get<StudentList>(`${this.apiUrl}/students${queryParams}`)
       .pipe(
         catchError(this.handleError)
       );
   }
   getStudentsOfUser(page: number = 0, limit: number = 10): Observable<StudentList> {
-    const token = localStorage.getItem('auth_token'); // Retrieve the token
-    const headers = { 'Authorization': `Bearer ${token}` }; // Prepare the headers
+    // const token = localStorage.getItem('auth_token'); // Retrieve the token
+    // const headers = { 'Authorization': `Bearer ${token}` }; // Prepare the headers
+    console.log('sdlkfj')
     const queryParams = `?page=${page}&limit=${limit}`;
-    return this.http.get<StudentList>(`${this.apiUrl}/student-of-user${queryParams}`, { headers })
+    return this.http.get<StudentList>(`${this.apiUrl}/student-of-user${queryParams}`)
       .pipe(
         catchError(this.handleError)
       );

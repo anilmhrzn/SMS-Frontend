@@ -6,6 +6,9 @@ import {AddstudentComponent} from "./components/students/addstudent/addstudent.c
 import {StudentOfUserComponent} from "./components/students/student-of-user/student-of-user.component";
 import {ExamsComponent} from "./components/exams/exams/exams.component";
 import {AddExamComponent} from "./components/exams/add-exam/add-exam.component";
+import {
+  AddMarksOfSpecificSubjectComponent
+} from "./components/marks/add-marks-of-specific-subject/add-marks-of-specific-subject.component";
 
 export const routes: Routes = [
   {path: 'students', component: StudentComponent,canActivate: [AuthGuard]},
@@ -14,6 +17,7 @@ export const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path:'exams',component:ExamsComponent,canActivate: [AuthGuard]},
   {path:'exams/new',component:AddExamComponent,canActivate: [AuthGuard]},
+  {path:'exams/marks',component:AddMarksOfSpecificSubjectComponent,canActivate: [AuthGuard]},
   {path: '', redirectTo:'/login', pathMatch: "full"}
 ];
 
