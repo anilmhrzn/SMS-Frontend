@@ -6,10 +6,16 @@
   <div class="collapse navbar-collapse" id="navbarText">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item ">
+        <a class="nav-link" routerLinkActive="active" routerLink="/dashboard">Dashboard</a>
+      </li>
+      <li class="nav-item ">
         <a class="nav-link" routerLinkActive="active" routerLink="/students">Students</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" routerLinkActive="active" routerLink="/exams">Exams</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" (click)="logout()">logout</a>
       </li>
     </ul>
   </div>

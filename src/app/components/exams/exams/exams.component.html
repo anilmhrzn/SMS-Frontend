@@ -1,5 +1,18 @@
-<button type="button" class="btn m-2  btn-info" routerLink="/exams/new">Add exam</button>
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb bg-transparent">
+    <li class="breadcrumb-item " aria-current="page">
+      <a routerLink="/exams" href="#">Exams</a>
+    </li>
+<!--    <li class="breadcrumb-item " aria-current="page">-->
+<!--&lt;!&ndash;      <a routerLink="/marks/view/marks" href="#">{{ subjectName }}</a>&ndash;&gt;-->
+<!--    </li>-->
+<!--    <li class="breadcrumb-item active" aria-current="page">-->
+<!--      <a routerLink="/marks/view/marks" href="#">View Marks</a>-->
+<!--    </li>-->
+  </ol>
 
+</nav>
+<button type="button" class="btn m-2  btn-info" routerLink="/exams/new">Add exam</button>
 <div class="container-fluid bg-light py-2">
   <form [formGroup]="ExamSearchForm" (ngSubmit)="onSearchSubmit()" class="row align-items-center justify-content-center">
     <div class="col-md-2 pt-3">
@@ -41,6 +54,7 @@
       <th scope="col">Name</th>
       <th scope="col">date</th>
       <th scope="col">subject</th>
+      <th scope="col">options</th>
     </tr>
     </thead>
     <tbody class="table-group-divider">
@@ -49,6 +63,12 @@
       <td>{{ exam.name }}</td>
       <td>{{ exam.date }}</td>
       <td>{{ exam.subject }}</td>
+      <td>
+      <button type="button" class="btn m-2  btn-info" (click)="goToAddMarks(exam.id,exam.subject,exam.name,exam.date)" routerLink="/exams/marks">Add marks</button>
+      <button type="button" class="btn m-2  btn-success" (click)="viewMarksByExamId(exam.id,exam.subject,exam.name,exam.date)" routerLink="/exams/marks/view">View marks</button>
+
+      </td>
+
     </tbody>
   </table>
 </div>

@@ -9,8 +9,14 @@ import {AddExamComponent} from "./components/exams/add-exam/add-exam.component";
 import {
   AddMarksOfSpecificSubjectComponent
 } from "./components/marks/add-marks-of-specific-subject/add-marks-of-specific-subject.component";
+import {ViewMarksByExamIdService} from "./core/services/marks/viewMarksByExamId/view-marks-by-exam-id.service";
+import {
+  ViewMarksofSpecificSubjectComponent
+} from "./components/marks/view-marksof-specific-subject/view-marksof-specific-subject.component";
+import {DashboardComponent} from "./components/dashboard/dashboard.component";
 
 export const routes: Routes = [
+  {path: 'dashboard', component:DashboardComponent,canActivate: [AuthGuard]},
   {path: 'students', component: StudentComponent,canActivate: [AuthGuard]},
   {path: 'students/add', component: AddstudentComponent,canActivate: [AuthGuard]},
   {path: 'students-of-user', component: StudentOfUserComponent,canActivate: [AuthGuard]},
@@ -18,6 +24,8 @@ export const routes: Routes = [
   {path:'exams',component:ExamsComponent,canActivate: [AuthGuard]},
   {path:'exams/new',component:AddExamComponent,canActivate: [AuthGuard]},
   {path:'exams/marks',component:AddMarksOfSpecificSubjectComponent,canActivate: [AuthGuard]},
+  {path:'exams/marks/view',component:ViewMarksofSpecificSubjectComponent,canActivate: [AuthGuard]},
+  // {path:'exams/marks/view'},
   {path: '', redirectTo:'/login', pathMatch: "full"}
 ];
 

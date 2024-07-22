@@ -13,6 +13,8 @@ import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/
 import {
   SearchExamServiceService
 } from "../../../core/services/examservice/searchExamService/search-exam-service.service";
+import {SharedService} from "../../../core/services/sharedService/shared-services.service";
+import {ViewMarksByExamIdService} from "../../../core/services/marks/viewMarksByExamId/view-marks-by-exam-id.service";
 
 @Component({
   selector: 'app-exams',
@@ -36,7 +38,9 @@ export class ExamsComponent implements OnInit {
   constructor(private fb: FormBuilder,
               private allExamServiceService: AllExamServiceService,
               private allSubjects: AllSubjectServiceService,
-              private searchExamServiceService: SearchExamServiceService
+              private searchExamServiceService: SearchExamServiceService,
+              private sharedService: SharedService,
+              private viewMarksByExamIdService:ViewMarksByExamIdService
   ) {
     this.ExamSearchForm = this.fb.group({
       name: [''],
@@ -76,22 +80,24 @@ export class ExamsComponent implements OnInit {
 
   onSearchSubmit() {
     // console.log(this.ExamSearchForm.value)
+// return;
 
     const name = this.ExamSearchForm.get('name')?.value;
     const date = this.ExamSearchForm.get('date')?.value;
     const subject = this.ExamSearchForm.get('subject')?.value;
-    console.log(name, date, subject)
+    // console.log(name, date, subject)
+    // return;
     if ((name !== null && name.trim() !== '') || (date !== null && date.trim() !== '') || (subject !== null && subject.trim() !== '')) {
       console.log(this.ExamSearchForm.value);
       this.searchExamServiceService.searchExam(name, date, subject).subscribe({
         next: (data: any) => {
           this.exams = data;
           console.log(this.exams);
-          if (this.exams.length === 0){
+          if (this.exams.length === 0) {
 
             this.errorMessage = "could not find the exam by the search criteria that you have given please try again with different criteria.";
-          }else{
-            this.errorMessage= '';
+          } else {
+            this.errorMessage = '';
           }
         },
         error: (error) => {
@@ -99,10 +105,27 @@ export class ExamsComponent implements OnInit {
         }
       });
     } else {
-      this.errorMessage= '';
-
+      this.errorMessage = '';
       this.loadExams();
 
     }
   }
+
+  goToAddMarks(examId: number, subjectName: string, examName: string, examDate: Date) {
+    this.sharedService.changeSubject(examId, subjectName, examName, examDate);
+  }
+  viewMarksByExamId(examId:number, subjectName: string, examName: string, examDate: Date){
+    // console.log(examId);
+    this.sharedService.changeSubject(examId, subjectName, examName, examDate);
+
+    // this.viewMarksByExamIdService.viewMarksByExamId(examId).subscribe({
+    //   next:(data)=>{
+    //     console.log(data);
+    //   },
+    //   error:(error)=>{
+    //     console.log(error);
+    //   }
+    // });
+  }
+
 }

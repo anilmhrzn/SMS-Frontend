@@ -20,5 +20,4 @@ export class SharedService {
   }
 }
 
-export class SharedServicesService {
-}
+

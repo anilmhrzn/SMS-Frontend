@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import {NgIf} from "@angular/common";
+import {AuthService} from "./core/services/authService/auth.service";
 
 @Component({
   selector: 'app-root',
@@ -14,11 +15,15 @@ export class AppComponent {
   title = 'app';
   showNavbar: boolean = true;
 
-  constructor(private router: Router) {
+  constructor(private router: Router,private authService:AuthService) {
     this.router.events.pipe(
       filter((event): event is NavigationEnd => event instanceof NavigationEnd)
     ).subscribe((event: NavigationEnd) => {
       this.showNavbar = !event.urlAfterRedirects.includes('/login');
     });
+  }
+
+  logout() {
+    this.authService.logout();
   }
 }
