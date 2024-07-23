@@ -16,20 +16,10 @@ import {animate, style, transition, trigger} from "@angular/animations";
   ],
   templateUrl: './student.component.html',
   styleUrls: ['./student.component.css'],
-  animations: [
-    trigger('alertAnimation', [
-      transition(':enter', [
-        style({ opacity: 0, transform: 'translateY(-100%)' }),
-        animate('300ms ease-out', style({ opacity: 1, transform: 'translateY(0)' }))
-      ]),
-      transition(':leave', [
-        animate('300ms ease-in', style({ opacity: 0, transform: 'translateY(-100%)' }))
-      ])
-    ])
-  ]
+
 })
 export class StudentComponent implements OnInit {
-  constructor(private studentService: StudentService,private alertService: AlertService) { }
+  constructor(private studentService: StudentService) { }
 
   students: Student[] = [];
   total: number = 0;
@@ -40,15 +30,7 @@ export class StudentComponent implements OnInit {
   showAlert: boolean = false;
   alertMessage: string = '';
   ngOnInit(): void {
-    this.alertService.getShowAlert().subscribe(show => {
-      this.showAlert = show;
-      if (show) {
-        setTimeout(() => this.hideAlert(), 3000); // Hide the alert after 3 seconds
-      }
-    });
-    this.alertService.getAlertMessage().subscribe(message => {
-      this.alertMessage = message;
-    });
+
     this.loadStudents(this.page, this.limit);
     // this.alertService.clearAlert();
   }
@@ -66,7 +48,5 @@ export class StudentComponent implements OnInit {
       }
     });
   }
-  hideAlert(): void {
-    this.showAlert = false;
-  }
+
 }

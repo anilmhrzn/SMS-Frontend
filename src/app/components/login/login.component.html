@@ -1,51 +1,13 @@
-<!--<p>login works!</p>-->
-<!--<p>Form Status: {{ loginForm.status }}</p>-->
-<!--<form [formGroup]="loginForm" (submit)="onLogin()">-->
-<!--  <input type="email" formControlName="email"  name="email" required>-->
-<!--  <input type="password" formControlName="password" name="password" required>-->
-<!--&lt;!&ndash;  {{email.value}}&ndash;&gt;-->
-<!--&lt;!&ndash;  <button type="submit" >Login</button>&ndash;&gt;-->
-<!--  <button type="submit" [disabled]="!loginForm.valid">Submit</button>-->
-<!--</form>-->
-<!--<div class="centered-alert mt-2" *ngIf="errorMessage">-->
-<!--    <div class="alert alert-danger " role="alert">-->
-<!--      {{ errorMessage }}-->
-<!--    </div>-->
-<!--</div>-->
-<!--<c-alert class="absolute" *ngIf="showAlert" [color]="'success'">{{alertMessage}}</c-alert>-->
-<!--<div *ngIf="showAlert" @alertAnimation class="alert alert-success" role="alert">-->
-<!--  {{ alertMessage }}-->
-<!--  <button type="button" class="close" aria-label="Close" (click)="hideAlert()">-->
-<!--    <span aria-hidden="true">&times;</span>-->
-<!--  </button>-->
-<!--</div>-->
-<!--<div *ngIf="showAlert" class="d-flex justify-content-center w-100">-->
-<!--  <div @alertAnimation class="alert alert-success w-25  " role="alert">-->
-<!--    {{ alertMessage }}-->
-<!--    <button type="button" class="close" aria-label="Close" (click)="hideAlert()">-->
-<!--      <span aria-hidden="true">&times;</span>-->
-<!--    </button>-->
-<!--  </div>-->
-<!--</div>-->
-
-<!--<div class="centered-alert mt-3" *ngIf="errorMessage && showError">-->
-<!--  <div class="alert alert-danger" role="alert">-->
-<!--    {{ errorMessage }}-->
-<!--    <button type="button" class="close" aria-label="Close" (click)="hideErrorMessage()">-->
-<!--      <span aria-hidden="true">&times;</span>-->
-<!--    </button>-->
-<!--  </div>-->
-<!--</div>-->
-<section class="vh-100 gradient-custom">
-  <div *ngIf="showAlert" class="position-absolute {{alertMessage }} d-flex justify-content-center w-100">
-    <div @alertAnimation class="alert alert-success w-25  " role="alert">
+<section class="vh-100 gradient-custom ">
+  <div *ngIf="showAlert" class="high-index position-absolute {{alertMessage }} d-flex justify-content-center w-100">
+    <div @alertAnimation class="alert alert-danger w-25  " role="alert">
       {{ alertMessage }}
       <button type="button" class="close" aria-label="Close" (click)="hideAlert()">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
   </div>
-  <div class="container py-5 h-100">
+  <div class="container py-5 h-100 low-index">
     <div class="row d-flex justify-content-center align-items-center h-100">
       <div class="col-12 col-md-8 col-lg-6 col-xl-5">
         <div class="card bg-dark text-white" style="border-radius: 1rem;">

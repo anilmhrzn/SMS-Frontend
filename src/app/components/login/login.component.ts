@@ -4,7 +4,7 @@ import {FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/
 import {NgIf} from "@angular/common";
 import {AuthService} from "../../core/services/authService/auth.service";
 import {AlertComponent} from "@coreui/angular";
-import { AlertService } from '../../core/services/alerts/alert-service.service';
+import {AlertService} from '../../core/services/alerts/alert-service.service';
 import {animate, style, transition, trigger} from "@angular/animations";
 
 @Component({
@@ -20,18 +20,19 @@ import {animate, style, transition, trigger} from "@angular/animations";
   animations: [
     trigger('alertAnimation', [
       transition(':enter', [
-        style({ opacity: 0, transform: 'translateY(-100%)' }),
-        animate('300ms ease-out', style({ opacity: 1, transform: 'translateY(0)' }))
+        style({opacity: 0, transform: 'translateY(-100%)'}),
+        animate('300ms ease-out', style({opacity: 1, transform: 'translateY(0)'}))
       ]),
       transition(':leave', [
-        animate('300ms ease-in', style({ opacity: 0, transform: 'translateY(-100%)' }))
+        animate('300ms ease-in', style({opacity: 0, transform: 'translateY(-100%)'}))
       ])
     ])
   ]
 })
 export class LoginComponent {
-  constructor(private authService: AuthService, private router: Router,private alertService: AlertService, private cdr: ChangeDetectorRef) {
+  constructor(private authService: AuthService, private router: Router, private alertService: AlertService, private cdr: ChangeDetectorRef) {
   }
+
   showAlert: boolean = false;
   alertMessage: string = '';
 
@@ -49,49 +50,43 @@ export class LoginComponent {
   }
 
 
-
   onLogin(): void {
     if (this.loginForm.valid) {
       this.authService.login(<string>this.loginForm.value.email, <string>this.loginForm.value.password).subscribe({
-        next: (response:any) => {
-          this.alertService.setAlertMessage('Login successful!');
-          this.alertService.setShowAlert(true);
-            this.router.navigate(['students']);
+        next: (response: any) => {
+
+          this.router.navigate(['dashboard']).then(r => {
+            this.alertService.setAlertMessage('Login successful!');
+            this.alertService.setShowAlert(true);
+          });
 
         },
-        error: (error:any) => {
+        error: (error: any) => {
           this.alertService.setAlertMessage('Login failed ! Please check your credentials.');
-          this.alertService.setShowAlert(true);
-          console.log('Login failed. Please check your credentials.');
-          // this.errorMessage = 'Login failed. Please check your credentials.';
-          // this.showError = true; // Show the error message
-          setTimeout(() => {
-            // this.hideErrorMessage(); // Hide the error message after 3 seconds
-            this.hideAlert();
-          }, 3000);
-          this.cdr.detectChanges();
+          this.setAlert();
         }
       });
     } else {
-      this.alertService.setAlertMessage('Login failed ! Please fill your credentials.');
-      this.alertService.setShowAlert(true);
-      this.alertService.getShowAlert().subscribe(show => {
-        console.log(`Received show alert: ${show}`);
-        this.showAlert = show;
-      });
-      this.alertService.getAlertMessage().subscribe(message => {
-        console.log(`Received alert message: ${message}`);
-        this.alertMessage = message;
-      });
-      // this.errorMessage = 'Login failed. Please check your credentials.';
-      // this.showError = true; // Show the error message
-      setTimeout(() => {
-        // this.hideErrorMessage(); // Hide the error message after 3 seconds
-        this.hideAlert();
-      }, 3000);
+      this.alertService.setAlertMessage('Please fill your credentials to login.');
+      this.setAlert();
     }
 
   }
+
+  setAlert() {
+    this.alertService.setShowAlert(true);
+    this.alertService.getShowAlert().subscribe(show => {
+      this.showAlert = show;
+    });
+    this.alertService.getAlertMessage().subscribe(message => {
+      this.alertMessage = message;
+    });
+    setTimeout(() => {
+      this.hideAlert();
+    }, 3000);
+
+  }
+
   hideAlert(): void {
     this.showAlert = false;
     this.cdr.detectChanges();

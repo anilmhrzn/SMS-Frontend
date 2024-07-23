@@ -1,12 +1,3 @@
-// import { Injectable } from '@angular/core';
-//
-// @Injectable({
-//   providedIn: 'root'
-// })
-// export class AlertServiceService {
-//
-//   constructor() { }
-// }
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
@@ -20,7 +11,6 @@ export class AlertService {
   constructor() { }
 
   setAlertMessage(message: string) {
-    console.log(`Setting alert message: ${message}`);
     this.alertMessageSource.next(message);
   }
 
@@ -29,7 +19,6 @@ export class AlertService {
   }
 
   setShowAlert(show: boolean) {
-    console.log(`Setting show message: ${show}`);
     this.showAlertSource.next(show);
   }
 

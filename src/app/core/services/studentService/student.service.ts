@@ -1,29 +1,24 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { catchError, Observable, throwError } from "rxjs";
+import {environment} from "../../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
 })
 export class StudentService {
-  private apiUrl = 'http://localhost:8080/api';
+  private apiUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 
   getStudents(page: number = 0, limit: number = 10): Observable<StudentList> {
-    // const token = localStorage.getItem('auth_token'); // Retrieve the token
-    // const headers = { 'Authorization': `Bearer ${token}` }; // Prepare the headers
     const queryParams = `?page=${page}&limit=${limit}`;
-    console.log('l')
     return this.http.get<StudentList>(`${this.apiUrl}/students${queryParams}`)
       .pipe(
         catchError(this.handleError)
       );
   }
   getStudentsOfUser(page: number = 0, limit: number = 10): Observable<StudentList> {
-    // const token = localStorage.getItem('auth_token'); // Retrieve the token
-    // const headers = { 'Authorization': `Bearer ${token}` }; // Prepare the headers
-    console.log('sdlkfj')
     const queryParams = `?page=${page}&limit=${limit}`;
     return this.http.get<StudentList>(`${this.apiUrl}/student-of-user${queryParams}`)
       .pipe(

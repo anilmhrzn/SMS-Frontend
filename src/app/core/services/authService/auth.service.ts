@@ -52,4 +52,12 @@ export class AuthService {
       })
     );
   }
+
+  isLoggedIn() {
+    if(this.getToken()) {
+    return true;
+  }else{
+      return false
+    }
+  }
 }

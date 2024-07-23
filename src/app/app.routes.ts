@@ -14,18 +14,20 @@ import {
   ViewMarksofSpecificSubjectComponent
 } from "./components/marks/view-marksof-specific-subject/view-marksof-specific-subject.component";
 import {DashboardComponent} from "./components/dashboard/dashboard.component";
+import {PageNotFoundComponent} from "./components/page-not-found/page-not-found.component";
 
 export const routes: Routes = [
-  {path: 'dashboard', component:DashboardComponent,canActivate: [AuthGuard]},
-  {path: 'students', component: StudentComponent,canActivate: [AuthGuard]},
-  {path: 'students/add', component: AddstudentComponent,canActivate: [AuthGuard]},
-  {path: 'students-of-user', component: StudentOfUserComponent,canActivate: [AuthGuard]},
+  {path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard]},
+  {path: 'students', component: StudentComponent, canActivate: [AuthGuard]},
+  {path: 'students/add', component: AddstudentComponent, canActivate: [AuthGuard]},
+  {path: 'students-of-user', component: StudentOfUserComponent, canActivate: [AuthGuard]},
   {path: 'login', component: LoginComponent},
-  {path:'exams',component:ExamsComponent,canActivate: [AuthGuard]},
-  {path:'exams/new',component:AddExamComponent,canActivate: [AuthGuard]},
-  {path:'exams/marks',component:AddMarksOfSpecificSubjectComponent,canActivate: [AuthGuard]},
-  {path:'exams/marks/view',component:ViewMarksofSpecificSubjectComponent,canActivate: [AuthGuard]},
-  // {path:'exams/marks/view'},
-  {path: '', redirectTo:'/login', pathMatch: "full"}
+  {path: 'exams', component: ExamsComponent, canActivate: [AuthGuard]},
+  {path: 'exams/new', component: AddExamComponent, canActivate: [AuthGuard]},
+  {path: 'exams/marks', component: AddMarksOfSpecificSubjectComponent, canActivate: [AuthGuard]},
+  {path: 'exams/marks/view', component: ViewMarksofSpecificSubjectComponent, canActivate: [AuthGuard]},
+  {path: 'page-not-found', component: PageNotFoundComponent, canActivate: [AuthGuard]},
+  {path: '', redirectTo: '/login', pathMatch: "full"},
+  {path: '**',redirectTo: '/page-not-found'} ,
 ];
 

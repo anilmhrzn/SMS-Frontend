@@ -14,3 +14,10 @@
   transform: translateX(-50%);
   z-index: 1000;
 }
+.high-index{
+
+  z-index: 1001;
+}
+.low-index{
+  z-index:-1;
+}

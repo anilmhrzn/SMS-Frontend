@@ -13,7 +13,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
       headers: req.headers.set('Authorization', ` ${authToken}`)
     });
-    console.log('dsflkj');
+    // console.log('dsflkj');
     return next.handle(authReq);
   }
 }

@@ -1,11 +1,4 @@
-<div *ngIf="showAlert" class="d-flex justify-content-center w-100">
-  <div @alertAnimation class="alert alert-success w-25  " role="alert">
-    {{ alertMessage }}
-    <button type="button" class="close" aria-label="Close" (click)="hideAlert()">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-</div>
+
 <button type="button" class="btn m-2  btn-info" routerLink="/students/add">Add student </button>
 <div class=" w-100 d-flex justify-content-center align-items-center mt-5">
   <table class="table w-75 table-hover" *ngIf="students.length">

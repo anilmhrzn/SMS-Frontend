@@ -15,11 +15,13 @@ export class AppComponent {
   title = 'app';
   showNavbar: boolean = true;
 
-  constructor(private router: Router,private authService:AuthService) {
+  constructor(private router: Router, private authService: AuthService) {
     this.router.events.pipe(
       filter((event): event is NavigationEnd => event instanceof NavigationEnd)
     ).subscribe((event: NavigationEnd) => {
-      this.showNavbar = !event.urlAfterRedirects.includes('/login');
+      // Assuming '/page-not-found' is a segment in your 404 page URL
+      // Adjust the condition based on your app's routing logic
+      this.showNavbar = !['/login'].includes(event.urlAfterRedirects);
     });
   }
 
