@@ -64,7 +64,7 @@
       <td>{{ exam.date }}</td>
       <td>{{ exam.subject }}</td>
       <td>
-      <button type="button" class="btn m-2  btn-info" (click)="goToAddMarks(exam.id,exam.subject,exam.name,exam.date)" routerLink="/exams/marks">Add marks</button>
+      <button type="button" class="btn m-2  btn-info" (click)="goToAddMarks(exam.id,exam.subject,exam.name,exam.date)" routerLink="/exams/marks/add">Add marks</button>
       <button type="button" class="btn m-2  btn-success" (click)="viewMarksByExamId(exam.id,exam.subject,exam.name,exam.date)" routerLink="/exams/marks/view">View marks</button>
 
       </td>

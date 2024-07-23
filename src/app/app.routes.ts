@@ -24,7 +24,7 @@ export const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'exams', component: ExamsComponent, canActivate: [AuthGuard]},
   {path: 'exams/new', component: AddExamComponent, canActivate: [AuthGuard]},
-  {path: 'exams/marks', component: AddMarksOfSpecificSubjectComponent, canActivate: [AuthGuard]},
+  {path: 'exams/marks/add', component: AddMarksOfSpecificSubjectComponent, canActivate: [AuthGuard]},
   {path: 'exams/marks/view', component: ViewMarksofSpecificSubjectComponent, canActivate: [AuthGuard]},
   {path: 'page-not-found', component: PageNotFoundComponent, canActivate: [AuthGuard]},
   {path: '', redirectTo: '/login', pathMatch: "full"},

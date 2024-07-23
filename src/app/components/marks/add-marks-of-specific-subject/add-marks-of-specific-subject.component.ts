@@ -12,6 +12,7 @@ interface UploadResponse {
   message?: string;
   error?: any[]; // Adjust the type according to the actual structure of your error
 }
+
 @Component({
   selector: 'app-add-marks-of-specific-subject',
   standalone: true,
@@ -25,12 +26,12 @@ interface UploadResponse {
 })
 export class AddMarksOfSpecificSubjectComponent implements OnInit {
   // examId: number | undefined;
-    examId: number | undefined;
+  examId: number | undefined;
   subjectName: String | undefined;
   examName: String | undefined;
   date: Date | undefined;
   // private fileUploadService: any;
-  uploadMessage:UploadResponse={};
+  uploadMessage: UploadResponse = {};
 
   constructor(private csvDownloadService: CsvDownloadService, private router: Router,
               private sharedService: SharedService,
@@ -62,7 +63,7 @@ export class AddMarksOfSpecificSubjectComponent implements OnInit {
       alert('The file must be a .csv file.');
       return;
     }
-    if(this.examId === undefined){
+    if (this.examId === undefined) {
       alert('Please select a exam.');
       this.router.navigate(['/exams']);
 
@@ -70,24 +71,26 @@ export class AddMarksOfSpecificSubjectComponent implements OnInit {
     }
 // Use FileUploadService to upload the file
     this.fileUploadService.uploadFile(this.examId, file).subscribe({
-  next: (event) => {
-    if (event.type === HttpEventType.Response) {
-      const responseBody = event.body as UploadResponse; // Type-casting to the interface
-      this.uploadMessage = responseBody;
-      console.log('Response received:', responseBody);
-      console.log('Message:', responseBody.message);
-      // this.
-      if (responseBody.error) {
-        console.log('Errors:', responseBody.error);
+      next: (event) => {
+        if (event.type === HttpEventType.Response) {
+          const responseBody = event.body as UploadResponse; // Type-casting to the interface
+          this.uploadMessage = responseBody;
+          console.log('Response received:', responseBody);
+          console.log('Message:', responseBody.message);
+          alert('Marks uploaded successfully');
+          // this.
+          if (responseBody.error) {
+            console.log('Errors:', responseBody.error);
+          }
+        } else if (event.type === HttpEventType.UploadProgress) {
+          // Handle upload progress
+        }
+      },
+      error: (error) => {
+
+        console.log('Upload failed:', error);
       }
-    } else if (event.type === HttpEventType.UploadProgress) {
-      // Handle upload progress
-    }
-  },
-  error: (error) => {
-    console.error('Upload failed:', error);
-  }
-});
+    });
     // Proceed with your form submission logic here
     console.log('File is valid. Proceed with form submission.');
   }
