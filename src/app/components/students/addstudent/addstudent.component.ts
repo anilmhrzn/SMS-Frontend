@@ -12,7 +12,7 @@ import {
 import {HttpClient} from '@angular/common/http';
 import {NgClass, NgForOf, NgIf} from "@angular/common";
 import {exitCodeFromResult} from "@angular/compiler-cli";
-import {RouterLink} from "@angular/router";
+import {Router, RouterLink} from "@angular/router";
 
 @Component({
   selector: 'app-addstudent',
@@ -31,7 +31,7 @@ export class AddstudentComponent {
   studentForm: FormGroup;
   errorMessage: string = '';
 
-  constructor(private fb: FormBuilder, private http: HttpClient) {
+  constructor(private fb: FormBuilder, private http: HttpClient,private router: Router) {
     this.studentForm = this.fb.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
@@ -90,7 +90,8 @@ export class AddstudentComponent {
         {headers})
         .subscribe({
           next: (response) => {
-            console.log('Student added successfully', response);
+            alert('Student added successfully');
+            this.router.navigate(['/students']);
             // Handle success response
           },
           error: (error) => {

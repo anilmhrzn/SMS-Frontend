@@ -34,24 +34,24 @@ export class AuthService {
     return localStorage.getItem('auth_token');
   }
 
-  validateToken(): Observable<boolean> {
-    const token = this.getToken();
-    if (!token) {
-      return of(false);
-    }
-    const headers = new HttpHeaders({ 'Authorization': token });
-    return this.http.get<boolean>('http://localhost:8080/api/validate-token', { headers }).pipe(
-      map(response => true),
-      catchError((error: HttpErrorResponse) => {
-        if (error.status === 401) { // Unauthorized
-          alert('Your session has expired or the token is invalid. Please log in again.');
-        } else {
-          alert('An error occurred while validating your session. Please try again.');
-        }
-        return of(false);
-      })
-    );
-  }
+  // validateToken(): Observable<boolean> {
+  //   const token = this.getToken();
+  //   if (!token) {
+  //     return of(false);
+  //   }
+  //   const headers = new HttpHeaders({ 'Authorization': token });
+  //   return this.http.get<boolean>('http://localhost:8080/api/validate-token', { headers }).pipe(
+  //     map(response => true),
+  //     catchError((error: HttpErrorResponse) => {
+  //       if (error.status === 401) { // Unauthorized
+  //         alert('Your session has expired or the token is invalid. Please log in again.');
+  //       } else {
+  //         alert('An error occurred while validating your session. Please try again.');
+  //       }
+  //       return of(false);
+  //     })
+  //   );
+  // }
 
   isLoggedIn() {
     if(this.getToken()) {

@@ -70,6 +70,7 @@ export class AddExamComponent implements OnInit {
     } else {
       this.ExamForm.markAllAsTouched(); // Mark all controls as touched to show errors
       this.errorMessage = "Please fill out all the fields";
+      console.log('Form is invalid');
     }
   }
 

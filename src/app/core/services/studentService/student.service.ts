@@ -11,7 +11,7 @@ export class StudentService {
 
   constructor(private http: HttpClient) {}
 
-  getStudents(page: number = 0, limit: number = 10): Observable<StudentList> {
+  getStudents(page: number = 1, limit: number = 10): Observable<StudentList> {
     const queryParams = `?page=${page}&limit=${limit}`;
     return this.http.get<StudentList>(`${this.apiUrl}/students${queryParams}`)
       .pipe(

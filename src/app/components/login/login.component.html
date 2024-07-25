@@ -15,19 +15,14 @@
             <form [formGroup]="loginForm" (submit)="onLogin()" class="md-5 md-4">
               <h2 class="fw-bold mb-1 text-uppercase">Login</h2>
               <p class="text-white-50 mb-2">Please enter your login and password!</p>
-              <!--              <div class="mb-3 text-danger text-exception">-->
-              <!--  <span *ngIf="errorMessage">-->
-              <!--    Error: {{ errorMessage }}-->
-              <!--  </span>-->
-              <!--              </div>-->
 
               <div data-mdb-input-init class="form-outline form-white mb-4">
-                <input type="email" id="typeEmailX" class="form-control form-control-lg" formControlName="email"/>
+                <input type="email" id="typeEmailX" class="form-control form-control-lg" formControlName="email" autocomplete="email"/>
                 <label class="form-label" for="typeEmailX">Email</label>
               </div>
               <div data-mdb-input-init class="form-outline form-white mb-4">
                 <input type="password" id="typePasswordX" class="form-control form-control-lg"
-                       formControlName="password"/>
+                       formControlName="password" autocomplete="current-password" />
                 <label class="form-label" for="typePasswordX">Password</label>
               </div>
               <button data-mdb-button-init data-mdb-ripple-init class="btn btn-outline-light btn-lg px-5" type="submit"

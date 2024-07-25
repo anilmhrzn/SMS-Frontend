@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component} from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {NgIf} from "@angular/common";
@@ -29,9 +29,20 @@ import {animate, style, transition, trigger} from "@angular/animations";
     ])
   ]
 })
-export class LoginComponent {
+export class LoginComponent  {
   constructor(private authService: AuthService, private router: Router, private alertService: AlertService, private cdr: ChangeDetectorRef) {
+
+
   }
+
+  // ngOnInit(): void {
+  //   this.alertService.getAlertMessage().subscribe(message => {
+  //     this.alertMessage = message;
+  //   })
+  //   this.alertService.getShowAlert().subscribe(show => {
+  //     this.showAlert = show;
+  //   });
+  //   }
 
   showAlert: boolean = false;
   alertMessage: string = '';

@@ -35,8 +35,8 @@
 <!--TODO do this-->
 <div class="w-100 d-flex justify-content-center mb-5">
   <div *ngIf="students.length" class="pagination">
-    <button class="page-link" (click)="loadStudents(page - limit, limit)" [disabled]="page <= 0">Previous</button>
-    <button class="page-link" (click)="loadStudents(page + limit, limit)" [disabled]="page * limit >= total">Next
+    <button class="page-link" (click)="loadStudents(page-1 , limit)" [disabled]="page <= 1">Previous</button>
+    <button class="page-link" (click)="loadStudents(page+1, limit)" [disabled]="page > total/limit">Next
     </button>
   </div>
 </div>

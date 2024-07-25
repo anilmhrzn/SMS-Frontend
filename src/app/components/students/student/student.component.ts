@@ -23,7 +23,7 @@ export class StudentComponent implements OnInit {
 
   students: Student[] = [];
   total: number = 0;
-  page: number = 0;
+  page: number = 1;
   limit: number = 10;
   errorMessage: string = '';
 
@@ -32,7 +32,6 @@ export class StudentComponent implements OnInit {
   ngOnInit(): void {
 
     this.loadStudents(this.page, this.limit);
-    // this.alertService.clearAlert();
   }
 
   loadStudents(page: number, limit: number): void {

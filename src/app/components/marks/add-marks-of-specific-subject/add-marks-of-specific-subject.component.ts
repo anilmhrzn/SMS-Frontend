@@ -7,7 +7,7 @@ import {
 } from "../../../core/services/fileUploadService/AddMarksFileUpload/file-upload-service.service";
 import {HttpEventType} from "@angular/common/http";
 import {NgForOf, NgIf} from "@angular/common";
-
+import { saveAs } from 'file-saver';
 interface UploadResponse {
   message?: string;
   error?: any[]; // Adjust the type according to the actual structure of your error
@@ -25,6 +25,10 @@ interface UploadResponse {
   styleUrl: './add-marks-of-specific-subject.component.css'
 })
 export class AddMarksOfSpecificSubjectComponent implements OnInit {
+  data = [
+    { StudentID: 1, Marks:55 },
+    // Add more data as needed
+  ];
   // examId: number | undefined;
   examId: number | undefined;
   subjectName: String | undefined;
@@ -75,9 +79,13 @@ export class AddMarksOfSpecificSubjectComponent implements OnInit {
         if (event.type === HttpEventType.Response) {
           const responseBody = event.body as UploadResponse; // Type-casting to the interface
           this.uploadMessage = responseBody;
-          console.log('Response received:', responseBody);
-          console.log('Message:', responseBody.message);
+          // console.log('Response received:', responseBody);
+          // console.log('Message:', responseBody.message);
           alert('Marks uploaded successfully');
+
+          console.log(this.uploadMessage.message);
+          console.log(this.uploadMessage);
+          console.log(this.uploadMessage.error);
           // this.
           if (responseBody.error) {
             console.log('Errors:', responseBody.error);
@@ -95,6 +103,22 @@ export class AddMarksOfSpecificSubjectComponent implements OnInit {
     console.log('File is valid. Proceed with form submission.');
   }
 
+  convertToCSV(data: any[]): string {
+    const array = [Object.keys(data[0])].concat(data);
+
+    return array.map(row => {
+      return Object.values(row).map(value => {
+        return typeof value === 'string' ? JSON.stringify(value) : value;
+      }).toString();
+    }).join('\n');
+  }
+
+  // Method to trigger CSV download
+  downloadCSV() {
+    const csvData = this.convertToCSV(this.data);
+    const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
+    saveAs(blob, 'data.csv');
+  }
   // downloadStudentsCsv(subjectId: number): void {
   //   this.csvDownloadService.downloadCSV(subjectId).subscribe(blob => {
   //     console.log(`Preparing to download CSV file...`);
