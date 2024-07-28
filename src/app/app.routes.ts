@@ -15,10 +15,12 @@ import {
 } from "./components/marks/view-marksof-specific-subject/view-marksof-specific-subject.component";
 import {DashboardComponent} from "./components/dashboard/dashboard.component";
 import {PageNotFoundComponent} from "./components/page-not-found/page-not-found.component";
+import {StudentProfileComponent} from "./components/students/student-profile/student-profile.component";
 
 export const routes: Routes = [
   {path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard]},
   {path: 'students', component: StudentComponent, canActivate: [AuthGuard]},
+  {path: 'student/:id', component: StudentProfileComponent, canActivate: [AuthGuard]},
   {path: 'students/add', component: AddstudentComponent, canActivate: [AuthGuard]},
   {path: 'students-of-user', component: StudentOfUserComponent, canActivate: [AuthGuard]},
   {path: 'login', component: LoginComponent},

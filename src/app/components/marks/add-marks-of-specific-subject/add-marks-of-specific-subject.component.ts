@@ -7,7 +7,10 @@ import {
 } from "../../../core/services/fileUploadService/AddMarksFileUpload/file-upload-service.service";
 import {HttpEventType} from "@angular/common/http";
 import {NgForOf, NgIf} from "@angular/common";
-import { saveAs } from 'file-saver';
+import {saveAs} from 'file-saver';
+// import {  } from '@coreui/icons';
+
+
 interface UploadResponse {
   message?: string;
   error?: any[]; // Adjust the type according to the actual structure of your error
@@ -17,6 +20,7 @@ interface UploadResponse {
   selector: 'app-add-marks-of-specific-subject',
   standalone: true,
   imports: [
+    // IconDirective,
     RouterLink,
     NgIf,
     NgForOf
@@ -26,7 +30,7 @@ interface UploadResponse {
 })
 export class AddMarksOfSpecificSubjectComponent implements OnInit {
   data = [
-    { StudentID: 1, Marks:55 },
+    {StudentID: 1, Marks: 55},
     // Add more data as needed
   ];
   // examId: number | undefined;
@@ -108,7 +112,7 @@ export class AddMarksOfSpecificSubjectComponent implements OnInit {
 
     return array.map(row => {
       return Object.values(row).map(value => {
-        return typeof value === 'string' ? JSON.stringify(value) : value;
+        return  value;
       }).toString();
     }).join('\n');
   }
@@ -116,23 +120,7 @@ export class AddMarksOfSpecificSubjectComponent implements OnInit {
   // Method to trigger CSV download
   downloadCSV() {
     const csvData = this.convertToCSV(this.data);
-    const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
+    const blob = new Blob([csvData], {type: 'text/csv;charset=utf-8;'});
     saveAs(blob, 'data.csv');
   }
-  // downloadStudentsCsv(subjectId: number): void {
-  //   this.csvDownloadService.downloadCSV(subjectId).subscribe(blob => {
-  //     console.log(`Preparing to download CSV file...`);
-  //     const url = window.URL.createObjectURL(blob);
-  //     const a = document.createElement('a');
-  //     a.href = url;
-  //     a.download = 'students.csv';
-  //     document.body.appendChild(a);
-  //     a.click();
-  //     window.URL.revokeObjectURL(url);
-  //     a.remove();
-  //     console.log(`CSV download should now be initiated.`);
-  //   }, error => {
-  //     console.error(`Failed to download CSV: ${error}`);
-  //   });
-  // }
 }

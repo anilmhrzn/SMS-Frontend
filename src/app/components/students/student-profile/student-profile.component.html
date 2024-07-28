@@ -1,0 +1,44 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb bg-transparent">
+    <li class="breadcrumb-item " aria-current="page">
+      <a routerLink="/students" href="#">Student</a>
+    </li>
+    <li class="breadcrumb-item " aria-current="page">
+      <a routerLink="/student/{{studentProfile?.id}}" href="#">{{ studentProfile?.name }}</a>
+    </li>
+
+  </ol>
+
+</nav>
+
+<div class="container mt-4 mb-4 p-3 d-flex justify-content-center">
+  <div class="card bg-primary p-4">
+    <div class=" image d-flex flex-column justify-content-center align-items-center">
+      <button class="btn btn-secondary"><img ngSrc="http://localhost:8080/uploads/photos/{{studentProfile?.photo}}"
+                                             class="img-fluid" width="100"/></button>
+      <div class="border border-5 border-top border-danger rounded-bottom  w-100 mt-3"></div>
+      <span class="name mt-3  ">{{ studentProfile?.name }}</span>
+      <div class="d-flex flex-row justify-content-center align-items-center gap-2">
+        <span class="idd">{{ studentProfile?.email }}</span>
+        <span><i class="fa fa-copy"></i></span></div>
+      <div class="d-flex flex-column justify-content-center align-items-center mt-3"><span class="number">Ph.no
+        </span>
+        <div *ngFor="let number of studentProfile?.number">
+
+          <span>{{ number }}</span>
+        </div>
+
+      </div>
+      <div class=" d-flex mt-2">
+        <button class="btn btn-dark">Edit Profile</button>
+      </div>
+      <!--      <div class="text mt-3">-->
+      <!--        <span>Eleanor Pena is a creator of minimalistic x bold graphics and digital artwork.<br><br> Artist/ Creative Director by Day #NFT minting-->
+      <!--          with FND night. </span></div>-->
+      <!--      <div class="gap-3 mt-3 icons d-flex flex-row justify-content-center align-items-center"><span><i-->
+      <!--        class="fa fa-twitter"></i></span> <span><i class="fa fa-facebook-f"></i></span> <span><i-->
+      <!--        class="fa fa-instagram"></i></span> <span><i class="fa fa-linkedin"></i></span></div>-->
+      <!--      <div class=" px-2 rounded mt-4 date "><span class="join">Joined May,2021</span></div>-->
+    </div>
+  </div>
+</div>
