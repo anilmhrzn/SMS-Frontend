@@ -16,16 +16,18 @@ import {
 import {DashboardComponent} from "./components/dashboard/dashboard.component";
 import {PageNotFoundComponent} from "./components/page-not-found/page-not-found.component";
 import {StudentProfileComponent} from "./components/students/student-profile/student-profile.component";
+import {hasRoleGuard} from "./core/guards/HasRole/has-role.guard";
+// import  from "./core/guards/HasRole/has-role.guard";
 
 export const routes: Routes = [
   {path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard]},
   {path: 'students', component: StudentComponent, canActivate: [AuthGuard]},
   {path: 'student/:id', component: StudentProfileComponent, canActivate: [AuthGuard]},
-  {path: 'students/add', component: AddstudentComponent, canActivate: [AuthGuard]},
+  {path: 'students/add', component: AddstudentComponent, canActivate: [AuthGuard,hasRoleGuard],data: {ROLE_REQUIRED: 'ROLE_ADMIN'}},
   {path: 'students-of-user', component: StudentOfUserComponent, canActivate: [AuthGuard]},
   {path: 'login', component: LoginComponent},
   {path: 'exams', component: ExamsComponent, canActivate: [AuthGuard]},
-  {path: 'exams/new', component: AddExamComponent, canActivate: [AuthGuard]},
+  {path: 'exams/new', component: AddExamComponent, canActivate: [AuthGuard,hasRoleGuard],data: {ROLE_REQUIRED: 'ROLE_ADMIN'}},
   {path: 'exams/marks/add', component: AddMarksOfSpecificSubjectComponent, canActivate: [AuthGuard]},
   {path: 'exams/marks/view', component: ViewMarksofSpecificSubjectComponent, canActivate: [AuthGuard]},
   {path: 'page-not-found', component: PageNotFoundComponent, canActivate: [AuthGuard]},

@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {RouterLink} from "@angular/router";
+import {Router, RouterLink} from "@angular/router";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {HttpClient} from "@angular/common/http";
 import {NgClass, NgForOf, NgIf} from "@angular/common";
@@ -7,6 +7,7 @@ import {
   AllSubjectServiceService, SubjectList
 } from "../../../core/services/subjectsService/allSubjectsService/all-subject-service.service";
 import {AddExamServiceService} from "../../../core/services/examservice/addExamService/add-exam-service.service";
+import {AlertService} from "../../../core/services/alerts/alert-service.service";
 
 @Component({
   selector: 'app-add-exam',
@@ -29,8 +30,9 @@ export class AddExamComponent implements OnInit {
   constructor(private fb: FormBuilder,
               private http: HttpClient,
               private allSubjects: AllSubjectServiceService,
-              private addExamService: AddExamServiceService
-
+              private addExamService: AddExamServiceService,
+              private router: Router,
+              private alertService: AlertService
   ) {
     this.ExamForm = this.fb.group({
       name: ['', Validators.required],
@@ -58,7 +60,21 @@ export class AddExamComponent implements OnInit {
   onSubmit() {
     console.log(this.ExamForm.value);
     if (this.ExamForm.valid) {
-      this.addExamService.addExam(this.ExamForm);
+      this.addExamService.addExam(this.ExamForm).subscribe({
+        next: (data) => {
+          console.log(data);
+          this.router.navigate(['/exams']).then(
+            () => {
+              this.alertService.setAlertMessage('Exam added successfully');
+              this.alertService.setShowAlert(true);
+              this.alertService.setAlertColor('alert-success');
+            }
+          );
+        },
+        error: (error) => {
+          this.errorMessage = error;
+        }
+      });
       // // this.http.post('http://localhost:8080/exams', this.ExamForm.value).subscribe({
       // //   next: (data) => {
       // //     console.log(data);

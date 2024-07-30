@@ -5,7 +5,31 @@
     </li>
   </ol>
 </nav>
-<button type="button" class="btn m-2  btn-info" routerLink="/students/add">Add student </button>
+
+<button type="button" *appHasRole="'ROLE_ADMIN'" class="btn m-2  btn-info" routerLink="/students/add">Add student
+</button>
+<div class="container-fluid bg-light py-2">
+  <form [formGroup]="StudentSearchForm" (ngSubmit)="onSearchSubmit()"
+        class="row align-items-center justify-content-center">
+    <div class="col-md-2 pt-3">
+      <div class="form-group ">
+        <input type="text" class="form-control" placeholder="Enter name of the exam" formControlName="name">
+      </div>
+    </div>
+
+    <div class="col-md-2 pt-3" >
+      <div class="form-group">
+        <select id="inputState" class="form-control" formControlName="semester">
+          <option selected value={{0}}>select semester</option>
+          <option *ngFor="let semesterResponse of semesterResponse" [value]="semesterResponse.id">{{ semesterResponse.semester }}</option>
+        </select>
+      </div>
+    </div>
+    <div class="col-md-2">
+      <button type="submit" class="btn btn-primary btn-block">Search</button>
+    </div>
+  </form>
+</div>
 <div class=" w-100 d-flex justify-content-center align-items-center mt-5">
   <table class="table w-75 table-hover" *ngIf="students.length">
     <thead>
@@ -15,7 +39,7 @@
       <th scope="col">Email</th>
       <th scope="col">Phone</th>
 
-<!--      <th scope="col">Options</th>-->
+      <!--      <th scope="col">Options</th>-->
     </tr>
     </thead>
     <tbody class="table-group-divider">
@@ -30,19 +54,20 @@
 
         </div>
       </td>
-<!--      <td>-->
-<!--        <button type="button" class="btn m-2  btn-info" routerLink="/students">Add to my subject</button>-->
-<!--      </td>-->
     </tr>
 
     </tbody>
   </table>
 </div>
 <!--TODO do this-->
-<div class="w-100 d-flex justify-content-center mb-5">
+<div class="w-100 d-flex justify-content-center pb-5">
   <div *ngIf="students.length" class="pagination">
-    <button class="page-link" (click)="loadStudents(page-1 , limit)" [disabled]="page <= 1">Previous</button>
-    <button class="page-link" (click)="loadStudents(page+1, limit)" [disabled]="page > total/limit">Next
+    <button class="page-link" (click)="loadStudents(page-1 )" [disabled]="page <= 1">Previous</button>
+    <div class="page-link d-flex h-100 align-items-center justify-content-center ">
+      {{ page }} of {{ Math.ceil(total / limit) }}
+    </div>
+
+    <button class="page-link" (click)="loadStudents(page+1)" [disabled]="page >= total/limit">Next
     </button>
   </div>
 </div>

@@ -1,5 +1,5 @@
 <div *ngIf="showAlert" class="high-index position-absolute {{alertMessage }} d-flex justify-content-center w-100">
-  <div @alertAnimation class="alert alert-danger w-25  " role="alert">
+  <div @alertAnimation class="alert {{alertColor}} w-25  " role="alert">
     {{ alertMessage }}
     <button type="button" class="close" aria-label="Close" (click)="hideAlert()">
       <span aria-hidden="true">&times;</span>
@@ -14,23 +14,23 @@
   </ol>
 
 </nav>
-<button type="button" class="btn m-2  btn-info" routerLink="/exams/new">Add exam</button>
+<button *appHasRole="'ROLE_ADMIN'" type="button" class="btn m-2  btn-info" routerLink="/exams/new">Add exam</button>
 <div class="container-fluid bg-light py-2">
-  <form [formGroup]="ExamSearchForm" (ngSubmit)="onSearchSubmit(1)"
+  <form [formGroup]="ExamSearchForm" (ngSubmit)="onSearchSubmit(page)"
         class="row align-items-center justify-content-center">
     <div class="col-md-2 pt-3">
       <div class="form-group ">
-        <input type="text" class="form-control" placeholder="Enter name of the exam" formControlName="name">
+        <input type="text" class="form-control" placeholder="Enter exam" formControlName="name">
       </div>
     </div>
     <div class="col-md-2 pt-3">
       <div class="form-group">
-        <input type="date" class="form-control" placeholder="Enter name of the exam" formControlName="date">
+        <input type="date" class="form-control" formControlName="date">
 
       </div>
     </div>
 
-    <div class="col-md-2 pt-3">
+    <div class="col-md-2 pt-3" *appHasRole="'ROLE_ADMIN'">
       <div class="form-group">
         <select id="inputState" class="form-control" formControlName="subject">
           <option value={{null}}>select subject</option>
@@ -53,7 +53,7 @@
   <table class="table w-75 table-hover" *ngIf="exams.length">
     <thead>
     <tr class="gradient-custom">
-      <th scope="col">studentId</th>
+      <th scope="col">Exam Id</th>
       <th scope="col">Name</th>
       <th scope="col">date</th>
       <th scope="col">subject</th>
@@ -67,7 +67,7 @@
       <td>{{ exam.date }}</td>
       <td>{{ exam.subject }}</td>
       <td>
-        <button type="button" class="btn m-2  btn-info" (click)="goToAddMarks(exam.id,exam.subject,exam.name,exam.date)"
+        <button *appHasRole="'ROLE_USER'" type="button" class="btn m-2  btn-info" (click)="goToAddMarks(exam.id,exam.subject,exam.name,exam.date)"
                 routerLink="/exams/marks/add">Add marks
         </button>
         <button type="button" class="btn m-2  btn-success"

@@ -11,8 +11,17 @@ export class StudentService {
 
   constructor(private http: HttpClient) {}
 
-  getStudents(page: number = 1, limit: number = 10): Observable<StudentList> {
-    const queryParams = `?page=${page}&limit=${limit}`;
+  getStudents(name:string|null,semester:number|null,page: number , limit: number ): Observable<StudentList> {
+
+    let queryParams = `?page=${page}&limit=${limit}`;
+    if (name !== null && name !== '') {
+      queryParams += `&name=${name}`;
+    }
+    if(semester !== null && semester !== 0){
+      queryParams += `&semester=${semester}`;
+    }
+    // console.log(`${this.apiUrl}/students${queryParams}`);
+    console.log('queryParams', queryParams);
     return this.http.get<StudentList>(`${this.apiUrl}/students${queryParams}`)
       .pipe(
         catchError(this.handleError)
@@ -20,7 +29,7 @@ export class StudentService {
   }
   getStudentsOfUser(page: number = 0, limit: number = 10): Observable<StudentList> {
     const queryParams = `?page=${page}&limit=${limit}`;
-    return this.http.get<StudentList>(`${this.apiUrl}/student-of-user${queryParams}`)
+    return this.http.get<StudentList>(`${this.apiUrl}/students${queryParams}`)
       .pipe(
         catchError(this.handleError)
       );

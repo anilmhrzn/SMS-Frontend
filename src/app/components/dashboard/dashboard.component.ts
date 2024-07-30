@@ -15,15 +15,17 @@ import {
 } from "../../core/services/examservice/getNoOfComingExams/get-no-of-coming-exams.service";
 import {animate, style, transition, trigger} from "@angular/animations";
 import {AlertService} from "../../core/services/alerts/alert-service.service";
+import {HasRoleDirective} from "../../core/derectives/has-role.directive";
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [
-    NgOptimizedImage,
-    RouterLink,
-    NgIf
-  ],
+    imports: [
+        NgOptimizedImage,
+        RouterLink,
+        NgIf,
+        HasRoleDirective
+    ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css',
   animations: [
@@ -48,6 +50,7 @@ export class DashboardComponent implements OnInit {
 
   showAlert: boolean = false;
   alertMessage: string = '';
+  alertColor: string = 'alert-danger';
 
   constructor(private noOfStudentsService: ViewNoOfStudentsService,
               private noOfFailedStudentsInLatestExamService: NoOfFailedStudentsInLatestExamService,
@@ -61,14 +64,20 @@ export class DashboardComponent implements OnInit {
     this.loadNoOfFailedStudentsInLatestExam();
     this.loadNoOfComingExams();
     this.alertService.getShowAlert().subscribe(show => {
+      this.alertService.getAlertMessage().subscribe(message => {
+        this.alertMessage = message;
+        this.alertService.getAlertColor().subscribe(color => {
+          this.alertColor = color;
+
+        })
+      });
       this.showAlert = show;
+
       if (show) {
         setTimeout(() => this.hideAlert(), 3000); // Hide the alert after 3 seconds
       }
     });
-    this.alertService.getAlertMessage().subscribe(message => {
-      this.alertMessage = message;
-    });
+
   }
 
   loadNoOfStudents() {

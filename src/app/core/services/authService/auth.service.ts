@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
-import { Router } from '@angular/router';
+import {Router} from '@angular/router';
 import {catchError, map, Observable, of} from 'rxjs';
-import { tap } from 'rxjs/operators';
+import {tap} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -10,11 +10,13 @@ import { tap } from 'rxjs/operators';
 export class AuthService {
   private authUrl = 'http://localhost:8080/api/login'; // Adjust this URL to your Symfony API
 
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(private http: HttpClient, private router: Router) {
+
+  }
 
   login(email: string, password: string): Observable<any> {
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.http.post<any>(this.authUrl, { email, password }, { headers, observe: 'response' })
+    const headers = new HttpHeaders({'Content-Type': 'application/json'});
+    return this.http.post<any>(this.authUrl, {email, password}, {headers, observe: 'response'})
       .pipe(
         tap(response => {
           const token = response.headers.get('Authorization');
@@ -29,10 +31,28 @@ export class AuthService {
     localStorage.removeItem('auth_token');
     this.router.navigate(['/login']);
   }
-
   getToken(): string | null {
     return localStorage.getItem('auth_token');
   }
+   getUser() {
+    const token = this.getToken();
+    if (!token) {
+      return null;
+    }
+    const payload = token.split('.')[1];
+    const decodedPayload = atob(payload);
+    return JSON.parse(decodedPayload);
+  }
+
+  // private getUser() {
+  //   const token = this.getToken();
+  //   if (!token) {
+  //     return null;
+  //   }
+  //   const payload = token.split('.')[1];
+  //   const decodedPayload = atob(payload);
+  //   return JSON.parse(decodedPayload);
+  // }
 
   // validateToken(): Observable<boolean> {
   //   const token = this.getToken();
@@ -54,10 +74,15 @@ export class AuthService {
   // }
 
   isLoggedIn() {
-    if(this.getToken()) {
-    return true;
-  }else{
+    if (this.getToken()) {
+      return true;
+    } else {
       return false
     }
+  }
+
+  hasRole(role: string) {
+    // console.log(this.getUser().roles);
+    return  this.getUser().roles.includes(role);
   }
 }

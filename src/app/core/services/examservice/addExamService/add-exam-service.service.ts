@@ -14,6 +14,6 @@ export class AddExamServiceService {
   addExam(examForm: any) {
     const token = localStorage.getItem('auth_token');
     const headers = {'Authorization': `${token}`}; // Prepare the headers with the token
-    this.http.post(`${this.apiUrl}/exams/new`, examForm.value, {headers}).subscribe();
+    return this.http.post(`${this.apiUrl}/exams/new`, examForm.value, {headers});
   }
 }

@@ -14,6 +14,12 @@ import {
 import {SharedService} from "../../../core/services/sharedService/shared-services.service";
 import {AlertService} from "../../../core/services/alerts/alert-service.service";
 import {animate, style, transition, trigger} from "@angular/animations";
+import {HasRoleDirective} from "../../../core/derectives/has-role.directive";
+import {AuthService} from "../../../core/services/authService/auth.service";
+import {
+  SubjectOfUserResponse,
+  ViewSubjectOfUserService
+} from "../../../core/services/UserService/ViewSubjectOfUserService/view-subject-of-user.service";
 
 @Component({
   selector: 'app-exams',
@@ -23,6 +29,7 @@ import {animate, style, transition, trigger} from "@angular/animations";
     NgIf,
     RouterLink,
     ReactiveFormsModule,
+    HasRoleDirective,
   ],
   templateUrl: './exams.component.html',
   styleUrl: './exams.component.css',
@@ -49,6 +56,7 @@ export class ExamsComponent implements OnInit {
   ExamSearchForm: FormGroup;
   showAlert: boolean = false;
   alertMessage: string = '';
+  alertColor: string = 'alert-danger';
 
   constructor(private fb: FormBuilder,
               private allSubjects: AllSubjectServiceService,
@@ -56,18 +64,55 @@ export class ExamsComponent implements OnInit {
               private sharedService: SharedService,
               private alertService: AlertService,
               private router: Router,
+              private authService: AuthService,
+              private cdr: ChangeDetectorRef,
+              private viewSubjectOfUserServiceService: ViewSubjectOfUserService,
   ) {
     this.ExamSearchForm = this.fb.group({
       name: [''],
       date: [''],
       subject: ['']
     });
+
   }
 
   ngOnInit(): void {
-    this.onSearchSubmit(this.page);
-    this.loadSubjects();
+    // setTimeout(() => {
+    //   this.cdr.detectChanges();
+    //
+    // })
 
+    this.alertService.getAlertMessage().subscribe({
+      next: (data) => {
+        this.alertMessage = data;
+        this.alertService.getShowAlert().subscribe(
+          data => {
+            this.showAlert = data;
+            this.alertService.getAlertColor().subscribe(
+              data => {
+                this.alertColor = data
+                setTimeout(() => {
+                  this.hideAlert();
+                }, 3000);
+              }
+            )
+
+          });
+      }
+    });
+    this.loadSubjects();
+    if (this.authService.hasRole('ROLE_USER')) {
+      this.viewSubjectOfUserServiceService.subjectOfUser().subscribe({
+        next: (data: SubjectOfUserResponse) => {
+          this.ExamSearchForm.patchValue({
+            subject: data.id
+          })
+          this.onSearchSubmit(this.page);
+        }
+      })
+    } else {
+      this.onSearchSubmit(this.page);
+    }
   }
 
   loadSubjects() {
@@ -84,7 +129,6 @@ export class ExamsComponent implements OnInit {
 
 
   onSearchSubmit(page: number) {
-    console.log(this.ExamSearchForm.value);
     this.page = page;
     const name = this.ExamSearchForm.get('name')?.value;
     const date = this.ExamSearchForm.get('date')?.value;
@@ -94,7 +138,6 @@ export class ExamsComponent implements OnInit {
         this.exams = data.exams;
         this.total = data.total;
         this.page = data.page;
-        console.log(this.exams);
         if (this.exams.length === 0) {
 
           this.errorMessage = "could not find the exam by the search criteria that you have given please try again with different criteria.";
@@ -105,7 +148,7 @@ export class ExamsComponent implements OnInit {
       error: (error) => {
         if (error.status == '401') {
           this.alertMessage = 'Session expired. Please login to continue';
-          this.showAlert=true
+          this.showAlert = true
           setTimeout(
             () => {
               this.router.navigate(['/login']).then(r => {
@@ -121,15 +164,30 @@ export class ExamsComponent implements OnInit {
     });
   }
 
-  goToAddMarks(examId: number, subjectName: string, examName: string, examDate: Date) {
+  goToAddMarks(examId:number,
+               subjectName:string,
+               examName:string,
+               examDate:Date) {
     this.sharedService.changeSubject(examId, subjectName, examName, examDate);
   }
 
-  viewMarksByExamId(examId: number, subjectName: string, examName: string, examDate: Date) {
+  viewMarksByExamId(examId
+                      :
+                      number, subjectName
+                      :
+                      string, examName
+                      :
+                      string, examDate
+                      :
+                      Date
+  ) {
     this.sharedService.changeSubject(examId, subjectName, examName, examDate);
 
   }
-  hideAlert(): void {
+
+  hideAlert()
+    :
+    void {
     this.showAlert = false;
   }
 }

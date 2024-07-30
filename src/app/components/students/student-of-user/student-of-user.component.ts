@@ -26,20 +26,20 @@ export class StudentOfUserComponent implements OnInit {
 
   ngOnInit(): void {
     console.log('helo')
-    this.loadUsersStudents(this.page, this.limit);
+    // this.loadUsersStudents(this.page, this.limit);
   }
 
-  loadUsersStudents(page: number, limit: number): void {
-    this.studentService.getStudentsOfUser(page, limit).subscribe({
-      next: (data: StudentList) => {
-        this.students = data.students;
-        this.total = data.total;
-        this.page = data.page;
-        this.limit = data.limit ? this.limit : 10; // Assuming 'limit' is a boolean in StudentList, adjust based on actual API
-      },
-      error: (error) => {
-        this.errorMessage = error;
-      }
-    });
-  }
+  // loadUsersStudents(page: number, limit: number): void {
+  //   this.studentService.getStudentsOfUser(page, limit).subscribe({
+  //     next: (data: StudentList) => {
+  //       this.students = data.students;
+  //       this.total = data.total;
+  //       this.page = data.page;
+  //       this.limit = data.limit ? this.limit : 10; // Assuming 'limit' is a boolean in StudentList, adjust based on actual API
+  //     },
+  //     error: (error) => {
+  //       this.errorMessage = error;
+  //     }
+  //   });
+  // }
 }

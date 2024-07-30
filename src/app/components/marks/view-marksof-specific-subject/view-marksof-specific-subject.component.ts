@@ -6,6 +6,7 @@ import {
 } from "../../../core/services/marks/viewMarksByExamId/view-marks-by-exam-id.service";
 import {SharedService} from "../../../core/services/sharedService/shared-services.service";
 import {NgForOf, NgIf} from "@angular/common";
+import {HasRoleDirective} from "../../../core/derectives/has-role.directive";
 
 
 @Component({
@@ -14,7 +15,8 @@ import {NgForOf, NgIf} from "@angular/common";
   imports: [
     RouterLink,
     NgForOf,
-    NgIf
+    NgIf,
+    HasRoleDirective
   ],
   templateUrl: './view-marksof-specific-subject.component.html',
   styleUrl: './view-marksof-specific-subject.component.css'

@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import {Injectable} from '@angular/core';
+import {BehaviorSubject} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -7,8 +7,10 @@ import { BehaviorSubject } from 'rxjs';
 export class AlertService {
   private alertMessageSource = new BehaviorSubject<string>('');
   private showAlertSource = new BehaviorSubject<boolean>(false);
+  private showAlertColor = new BehaviorSubject<string>('bg-danger');
 
-  constructor() { }
+  constructor() {
+  }
 
   setAlertMessage(message: string) {
     this.alertMessageSource.next(message);
@@ -26,8 +28,16 @@ export class AlertService {
     return this.showAlertSource.asObservable();
   }
 
-  // clearAlert() {
-  //   this.alertMessageSource.next('');
-  //   this.showAlertSource.next(false);
-  // }
+  getAlertColor() {
+    return this.showAlertColor.asObservable();
+  }
+  setAlertColor(color: string) {
+    this.showAlertColor.next(color);
+  }
+
+
+  clearAlert() {
+    this.alertMessageSource.next('');
+    this.showAlertSource.next(false);
+  }
 }

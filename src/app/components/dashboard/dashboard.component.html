@@ -1,5 +1,6 @@
+<h1 *appHasRole="'ROLE_ADMIN'">you are A admin</h1>
 <div *ngIf="showAlert" class="d-flex justify-content-center w-100">
-  <div @alertAnimation class="alert alert-success w-25  " role="alert">
+  <div @alertAnimation class="alert {{alertColor}} w-25  " role="alert">
     {{ alertMessage }}
     <button type="button" class="close" aria-label="Close" (click)="hideAlert()">
       <span aria-hidden="true">&times;</span>

@@ -31,22 +31,10 @@ import {animate, style, transition, trigger} from "@angular/animations";
 })
 export class LoginComponent  {
   constructor(private authService: AuthService, private router: Router, private alertService: AlertService, private cdr: ChangeDetectorRef) {
-
-
   }
-
-  // ngOnInit(): void {
-  //   this.alertService.getAlertMessage().subscribe(message => {
-  //     this.alertMessage = message;
-  //   })
-  //   this.alertService.getShowAlert().subscribe(show => {
-  //     this.showAlert = show;
-  //   });
-  //   }
-
   showAlert: boolean = false;
   alertMessage: string = '';
-
+alertColor: string = 'alert-danger';
   loginForm = new FormGroup(
     {
       email: new FormControl('', [Validators.required, Validators.email]),
@@ -69,6 +57,7 @@ export class LoginComponent  {
           this.router.navigate(['dashboard']).then(r => {
             this.alertService.setAlertMessage('Login successful!');
             this.alertService.setShowAlert(true);
+            this.alertService.setAlertColor('alert-success');
           });
 
         },

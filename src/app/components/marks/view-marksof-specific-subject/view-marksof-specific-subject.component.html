@@ -4,13 +4,12 @@
       <a routerLink="/exams" href="#">Exams</a>
     </li>
     <li class="breadcrumb-item " aria-current="page">
-      <a routerLink="/marks/view/marks" href="#">{{ subjectName }}</a>
+      <a routerLink="/exams/marks/view" href="#">{{ subjectName }}</a>
     </li>
     <li class="breadcrumb-item active" aria-current="page">
-      <a routerLink="/marks/view/marks" href="#">View Marks</a>
+      <a routerLink="/exams/marks/view" href="#">View Marks</a>
     </li>
   </ol>
-
 </nav>
 <p> Exam Name:{{ examName }}<br>Subject Name:{{ subjectName }}<br>Date of Exam:{{ date }}</p>
 <div class="w-100 text-right pr-5 text-danger">
@@ -37,12 +36,18 @@
     </tbody>
   </table>
   <div *ngIf="!marks?.length" class="border border-warning p-2">
-    <p class="text-danger font-italic">Please add marks for this exam as there is not any marks added</p>
+    <p class="text-danger font-italic" *appHasRole="'ROLE_USER'">Please add marks for this exam as there is not any
+      marks added</p>
 
-    <button type="button" class="btn   btn-info w-100" routerLink="/exams/marks/add">Add
+    <button *appHasRole="'ROLE_USER'" type="button" class="btn   btn-info w-100" routerLink="/exams/marks/add">Add
       marks
     </button>
+    <p class="text-danger font-italic" *appHasRole="'ROLE_ADMIN'">Please notify Teacher to add marks for this exam as
+      there is not any marks added</p>
 
+    <button *appHasRole="'ROLE_ADMIN'" type="button" class="btn   btn-info w-100" routerLink="/exams/marks/add">Notify
+      teacher
+    </button>
   </div>
 
 </div>
