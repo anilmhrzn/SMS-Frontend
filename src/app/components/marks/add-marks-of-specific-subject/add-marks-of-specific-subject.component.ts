@@ -5,22 +5,19 @@ import {SharedService} from "../../../core/services/sharedService/shared-service
 import {
   FileUploadService
 } from "../../../core/services/fileUploadService/AddMarksFileUpload/file-upload-service.service";
-import {HttpEventType} from "@angular/common/http";
 import {NgForOf, NgIf} from "@angular/common";
 import {saveAs} from 'file-saver';
-// import {  } from '@coreui/icons';
-
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 interface UploadResponse {
   message?: string;
-  error?: any[]; // Adjust the type according to the actual structure of your error
+  error?: any[];
 }
 
 @Component({
   selector: 'app-add-marks-of-specific-subject',
   standalone: true,
   imports: [
-    // IconDirective,
     RouterLink,
     NgIf,
     NgForOf
@@ -31,23 +28,21 @@ interface UploadResponse {
 export class AddMarksOfSpecificSubjectComponent implements OnInit {
   data = [
     {StudentID: 1, Marks: 55},
-    // Add more data as needed
   ];
-  // examId: number | undefined;
   examId: number | undefined;
   subjectName: String | undefined;
   examName: String | undefined;
   date: Date | undefined;
-  // private fileUploadService: any;
   uploadMessage: UploadResponse = {};
+  errorMessage: string | null = null;
 
   constructor(private csvDownloadService: CsvDownloadService, private router: Router,
               private sharedService: SharedService,
-              private fileUploadService: FileUploadService) {
+              private fileUploadService: FileUploadService,
+              private snackbar: MatSnackBar) {
   }
 
   ngOnInit() {
-
     this.sharedService.currentSubject.subscribe(details => {
       if (details === undefined) {
         this.router.navigate(['/exams']);
@@ -62,62 +57,96 @@ export class AddMarksOfSpecificSubjectComponent implements OnInit {
 
   submitForm(files: FileList | null): void {
     if (!files || files.length === 0) {
-      alert('Please select a file.');
+      // this.snackbar.
+      this.snackbar.open('Please select a file.', 'Close', {duration: 2000,
+      panelClass: ['custom-snackbar-error']});
       return;
     }
 
     const file = files[0];
-    if (file.type !== 'text/csv') {
-      alert('The file must be a .csv file.');
+    if (file.type !== 'text/csv' && !file.name.endsWith('.csv')) {
+      this.errorMessage = 'Please upload a valid CSV file.';
       return;
     }
-    if (this.examId === undefined) {
-      alert('Please select a exam.');
-      this.router.navigate(['/exams']);
 
-      return;
-    }
-// Use FileUploadService to upload the file
-    this.fileUploadService.uploadFile(this.examId, file).subscribe({
-      next: (event) => {
-        if (event.type === HttpEventType.Response) {
-          const responseBody = event.body as UploadResponse; // Type-casting to the interface
-          this.uploadMessage = responseBody;
-          // console.log('Response received:', responseBody);
-          // console.log('Message:', responseBody.message);
-          alert('Marks uploaded successfully');
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      const content = e.target.result;
+      this.validateCSV(content, file);
+    };
+    reader.readAsText(file);
+  }
 
-          console.log(this.uploadMessage.message);
-          console.log(this.uploadMessage);
-          console.log(this.uploadMessage.error);
-          // this.
-          if (responseBody.error) {
-            console.log('Errors:', responseBody.error);
-          }
-        } else if (event.type === HttpEventType.UploadProgress) {
-          // Handle upload progress
-        }
-      },
-      error: (error) => {
-
-        console.log('Upload failed:', error);
+  validateCSV(content: string, file: File): void {
+    const lines = content.split('\n');
+    if (lines.length > 0) {
+      const headers = lines[0].split(',').map(header => header.trim());
+      if (headers.length !== 2 || headers[0] !== 'StudentID' || headers[1] !== 'Marks') {
+        this.errorMessage = 'CSV file must have exactly two headers: StudentID and Marks.';
+        return;
       }
-    });
-    // Proceed with your form submission logic here
-    console.log('File is valid. Proceed with form submission.');
+
+      const data = [];
+      for (let i = 1; i < lines.length; i++) {
+        const row = lines[i].split(',').map(value => value.trim());
+        if (row.length !== 2) {
+          this.errorMessage = `Row ${i + 1} does not have exactly two columns.`;
+          return;
+        }
+
+        const studentID = row[0];
+        const marks = row[1];
+
+        if (!this.isInteger(studentID) || !this.isInteger(marks)) {
+          this.errorMessage = `Row ${i + 1} contains non-integer values.`;
+          return;
+        }
+
+        data.push({StudentID: studentID, Marks: marks});
+      }
+
+      this.errorMessage = null;
+      if (this.examId === undefined) {
+        alert('Please select an exam.');
+        this.router.navigate(['/exams']);
+        return;
+      }
+      this.fileUploadService.uploadFile(this.examId, file).subscribe(
+        // response => {
+        //   console.log('Data successfully uploaded', response);
+        // },
+        // error => {
+        //   this.errorMessage = `Failed to upload data: ${error.message}`;
+        // }
+        {
+          next: response => {
+            // this.uploadMessage = response;
+            console.log('Data successfully uploaded', response);
+
+          },
+          error: error => {
+            this.errorMessage = `Failed to upload data: ${error.message}`;
+          }
+        }
+      );
+    } else {
+      this.errorMessage = 'CSV file is empty.';
+    }
+  }
+
+  isInteger(value: string): boolean {
+    return /^\d+$/.test(value);
   }
 
   convertToCSV(data: any[]): string {
     const array = [Object.keys(data[0])].concat(data);
-
     return array.map(row => {
       return Object.values(row).map(value => {
-        return  value;
+        return value;
       }).toString();
     }).join('\n');
   }
 
-  // Method to trigger CSV download
   downloadCSV() {
     const csvData = this.convertToCSV(this.data);
     const blob = new Blob([csvData], {type: 'text/csv;charset=utf-8;'});

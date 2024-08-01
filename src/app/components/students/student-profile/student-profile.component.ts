@@ -33,6 +33,10 @@ export class StudentProfileComponent implements OnInit {
           next: ((data:StudentProfileResponse) => {
             console.log(data)
             this.studentProfile = data
+          }),error:((error) => {
+            if(error.status === 401){
+            console.log(error)
+            this.router.navigate(['/login']).then()}
           })
         })
       }

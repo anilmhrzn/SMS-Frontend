@@ -12,10 +12,13 @@ import {AuthService} from "./core/services/authService/auth.service";
   styleUrls: ['./app.component.css'] // Corrected from 'styleUrl' to 'styleUrls'
 })
 export class AppComponent {
+
   title = 'app';
   showNavbar: boolean = true;
 
   constructor(private router: Router, private authService: AuthService) {
+    // ({}as any).someMethod();
+
     this.router.events.pipe(
       filter((event): event is NavigationEnd => event instanceof NavigationEnd)
     ).subscribe((event: NavigationEnd) => {

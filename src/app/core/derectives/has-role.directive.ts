@@ -6,11 +6,8 @@ import {AuthService} from "../services/authService/auth.service";
   standalone: true
 })
 export class HasRoleDirective {
-  // private authService: AuthService;
   @Input()
   set appHasRole(role: string) {
-    // console.log(role);
-    // console.log(this.authService.hasRole(role));
     if (this.authService.hasRole(role)) {
       this.viewContainerRef.createEmbeddedView(this.templateRef);
     } else {

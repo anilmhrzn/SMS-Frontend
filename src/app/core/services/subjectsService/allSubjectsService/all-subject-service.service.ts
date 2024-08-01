@@ -18,9 +18,18 @@ export class AllSubjectServiceService {
         catchError(this.handleError)
       );
   }
-  private handleError(error: HttpErrorResponse): Observable<never> {
-    console.error('An error occurred:', error);
-    return throwError('Something went wrong; please try again later.');
+  private handleError(error:HttpErrorResponse): Observable<never> {
+    let errorMessage = 'An unknown error occurred!';
+    if (error.error instanceof ErrorEvent) {
+      // Client-side error
+      errorMessage = `Error: ${error.error.message}`;
+    } else {
+      // Server-side error
+      // console.log(error.error.error.status)
+      errorMessage = `Error Code: ${error.status}\nMessage: ${error.error.error}`;
+    }
+    console.log(error.status)
+    return throwError(() => new Error(errorMessage));
   }
 }
 

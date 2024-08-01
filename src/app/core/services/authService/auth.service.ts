@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
+import {HttpClient,  HttpHeaders} from '@angular/common/http';
 import {Router} from '@angular/router';
-import {catchError, map, Observable, of} from 'rxjs';
+import { Observable} from 'rxjs';
 import {tap} from 'rxjs/operators';
 
 @Injectable({
@@ -26,53 +26,24 @@ export class AuthService {
         })
       );
   }
-
   logout(): void {
     localStorage.removeItem('auth_token');
-    this.router.navigate(['/login']);
+    this.router.navigate(['/login']).then();
   }
+
   getToken(): string | null {
     return localStorage.getItem('auth_token');
   }
-   getUser() {
+  getUser() {
     const token = this.getToken();
     if (!token) {
+      this.router.navigate(['/login']).then();
       return null;
     }
     const payload = token.split('.')[1];
     const decodedPayload = atob(payload);
     return JSON.parse(decodedPayload);
   }
-
-  // private getUser() {
-  //   const token = this.getToken();
-  //   if (!token) {
-  //     return null;
-  //   }
-  //   const payload = token.split('.')[1];
-  //   const decodedPayload = atob(payload);
-  //   return JSON.parse(decodedPayload);
-  // }
-
-  // validateToken(): Observable<boolean> {
-  //   const token = this.getToken();
-  //   if (!token) {
-  //     return of(false);
-  //   }
-  //   const headers = new HttpHeaders({ 'Authorization': token });
-  //   return this.http.get<boolean>('http://localhost:8080/api/validate-token', { headers }).pipe(
-  //     map(response => true),
-  //     catchError((error: HttpErrorResponse) => {
-  //       if (error.status === 401) { // Unauthorized
-  //         alert('Your session has expired or the token is invalid. Please log in again.');
-  //       } else {
-  //         alert('An error occurred while validating your session. Please try again.');
-  //       }
-  //       return of(false);
-  //     })
-  //   );
-  // }
-
   isLoggedIn() {
     if (this.getToken()) {
       return true;
@@ -80,9 +51,7 @@ export class AuthService {
       return false
     }
   }
-
   hasRole(role: string) {
-    // console.log(this.getUser().roles);
-    return  this.getUser().roles.includes(role);
+    return this.getUser().roles.includes(role);
   }
 }

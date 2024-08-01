@@ -1,5 +1,18 @@
-<button type="button" class="btn m-2  btn-info" routerLink="/students">< Back </button>
+<!--<button type="button" class="btn m-2  btn-info" routerLink="/students">< Back</button>-->
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb bg-transparent">
+    <li class="breadcrumb-item " aria-current="page">
+      <a routerLink="/students" href="#">Student</a>
+    </li>
+    <!--    <li class="breadcrumb-item " aria-current="page">-->
+    <!--      <a routerLink="/marks/view/marks" href="#">{{ subjectName }}</a>-->
+    <!--    </li>-->
+    <li class="breadcrumb-item active" aria-current="page">
+      <a routerLink="/students/add" href="#">Add student</a>
+    </li>
+  </ol>
 
+</nav>
 <h2 class="text-center mt-2">Add New Student</h2>
 <div class="d-flex justify-content-center align-items-center w-100 v-100  mt-5">
 
@@ -46,6 +59,21 @@
              *ngIf="studentForm.get('gender')?.touched && studentForm.get('gender')?.errors?.['required']">Gender is
         required.</small>
     </div>
+    <div class="col-md-6">
+      <label for="semester" class="form-label"> Semester <span class="text-danger">*</span></label>
+
+    <select id="semester" class="form-control" formControlName="semester_id"
+            [ngClass]="{'is-valid':studentForm.controls['semester_id'].valid && studentForm.controls['semester_id'].touched,
+              'is-invalid':studentForm.controls['semester_id'].invalid && studentForm.controls['semester_id'].touched}"
+    >
+      <option selected value={{0}}>select semester</option>
+      <option *ngFor="let semesterResponse of semesterResponse" [value]="semesterResponse.id">{{ semesterResponse.semester }}</option>
+    </select>
+      <small class="text-danger"
+             *ngIf="studentForm.get('semester_id')?.touched && studentForm.get('semester_id')?.errors?.['min']">semester is
+        required.</small>
+    </div>
+
     <div class="col-12">
       <div formArrayName="number">
 

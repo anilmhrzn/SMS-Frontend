@@ -1,7 +1,9 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from "@angular/common/http";
-import { catchError, Observable, throwError } from "rxjs";
-import {environment} from "../../../environments/environment";
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
+import {catchError, Observable, throwError} from 'rxjs';
+import {environment} from '../../../environments/environment';
+import {AuthService} from '../authService/auth.service';
+import {Router} from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -9,36 +11,36 @@ import {environment} from "../../../environments/environment";
 export class StudentService {
   private apiUrl = environment.apiUrl;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private authService: AuthService, private router: Router) {
+  }
 
-  getStudents(name:string|null,semester:number|null,page: number , limit: number ): Observable<StudentList> {
-
+  getStudents(name: string | null, semester: number | null, page: number, limit: number): Observable<StudentList> {
     let queryParams = `?page=${page}&limit=${limit}`;
     if (name !== null && name !== '') {
       queryParams += `&name=${name}`;
     }
-    if(semester !== null && semester !== 0){
-      queryParams += `&semester=${semester}`;
+    let data = this.authService.getUser()
+    console.log(data.roles)
+    if (data.roles.includes('ROLE_USER')) {
+
+      console.log(data.id)
+      return this.http.get<StudentList>(`${this.apiUrl}/users/students/${queryParams}&user_id=${data.id}`,)
+    } else {
+      if (semester !== null && semester !== 0) {
+        queryParams += `&semester=${semester}`;
+      }
+      return this.http.get<StudentList>(`${this.apiUrl}/students${queryParams}`,)
+        .pipe(
+          catchError(error => this.handleError(error))
+        );
     }
-    // console.log(`${this.apiUrl}/students${queryParams}`);
-    console.log('queryParams', queryParams);
-    return this.http.get<StudentList>(`${this.apiUrl}/students${queryParams}`)
-      .pipe(
-        catchError(this.handleError)
-      );
-  }
-  getStudentsOfUser(page: number = 0, limit: number = 10): Observable<StudentList> {
-    const queryParams = `?page=${page}&limit=${limit}`;
-    return this.http.get<StudentList>(`${this.apiUrl}/students${queryParams}`)
-      .pipe(
-        catchError(this.handleError)
-      );
   }
 
-  // Handle HTTP errors
   private handleError(error: HttpErrorResponse): Observable<never> {
-    console.error('An error occurred:', error);
-    return throwError('Something went wrong; please try again later.');
+    if (error.status === 401) {
+      this.router.navigate(['/login']).then();
+    }
+    return throwError(() => new Error(error.error.message));
   }
 }
 
@@ -46,7 +48,7 @@ export interface Student {
   id: number;
   name: string;
   email: string;
-  number: number[]; // Assuming this matches the backend structure for phone numbers
+  number: number[];
 }
 
 export interface StudentList {

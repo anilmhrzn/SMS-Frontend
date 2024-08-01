@@ -77,12 +77,7 @@ export class ExamsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // setTimeout(() => {
-    //   this.cdr.detectChanges();
-    //
-    // })
-
-    this.alertService.getAlertMessage().subscribe({
+      this.alertService.getAlertMessage().subscribe({
       next: (data) => {
         this.alertMessage = data;
         this.alertService.getShowAlert().subscribe(
@@ -121,6 +116,15 @@ export class ExamsComponent implements OnInit {
           this.subjects = JSON.parse(data);
         },
         error: (error) => {
+          // if(error.status == '401'){
+          //   // log()
+          //   console.log('hello');
+          // }
+          // console.log('dsjklfaklsdjflsdjkflds')
+          // console.log(error)
+          console.log('Error fetching students:');
+          this.router.navigate(['/login']).then()
+          this.errorMessage = error.message;
           this.errorMessage = error;
         }
       }
@@ -146,6 +150,7 @@ export class ExamsComponent implements OnInit {
         }
       },
       error: (error) => {
+        console.log(error)
         if (error.status == '401') {
           this.alertMessage = 'Session expired. Please login to continue';
           this.showAlert = true

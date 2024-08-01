@@ -1,5 +1,5 @@
 // addstudent.component.ts
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -11,8 +11,11 @@ import {
 } from '@angular/forms';
 import {HttpClient} from '@angular/common/http';
 import {NgClass, NgForOf, NgIf} from "@angular/common";
-import {exitCodeFromResult} from "@angular/compiler-cli";
 import {Router, RouterLink} from "@angular/router";
+import {
+  AllSemesterResponse,
+  GetAllSemesterService
+} from "../../../core/services/semesterService/getAllSemester/get-all-semester.service";
 
 @Component({
   selector: 'app-addstudent',
@@ -27,18 +30,31 @@ import {Router, RouterLink} from "@angular/router";
   ],
   styleUrls: ['./addstudent.component.css']
 })
-export class AddstudentComponent {
+export class AddstudentComponent implements OnInit {
   studentForm: FormGroup;
   errorMessage: string = '';
+  semesterResponse:AllSemesterResponse[] = [];
 
-  constructor(private fb: FormBuilder, private http: HttpClient,private router: Router) {
+  constructor(private fb: FormBuilder, private http: HttpClient,private router: Router,private getAllSemester:GetAllSemesterService) {
     this.studentForm = this.fb.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       photo: ['', [Validators.required, imageFileValidator()]],
       gender: ['', Validators.required],
+      semester_id:[0,Validators.min(1)],
       number: this.fb.array([this.createPhoneNumberGroup()])
     });
+  }
+
+  ngOnInit(): void {
+    this.loadSemester();
+    }
+  loadSemester() {
+    this.getAllSemester.loadAllSemester().subscribe({
+      next: (data: AllSemesterResponse[]) => {
+        this.semesterResponse = data;
+      }
+    })
   }
 
   createPhoneNumberGroup(): FormGroup {
@@ -75,24 +91,18 @@ export class AddstudentComponent {
 
 
   onSubmit(): void {
+    console.log(this.studentForm.value.semester_id)
     if (this.studentForm.valid) {
-      const token = localStorage.getItem('auth_token');
-      const headers = {'Authorization': `${token}`}; // Prepare the headers with the token
       const phoneNumbers = this.studentForm.value.number.map((phoneGroup: {
         number: string
       }) => Number(phoneGroup.number));
       const formValue = {...this.studentForm.value, number: phoneNumbers};
-      // console.log(formValue);
-      // return;
-      // console.log(formValue.number);
       this.http.post('http://localhost:8080/api/student/new',
-        formValue,
-        {headers})
+        formValue)
         .subscribe({
           next: (response) => {
             alert('Student added successfully');
-            this.router.navigate(['/students']);
-            // Handle success response
+            this.router.navigate(['/students']).then();
           },
           error: (error) => {
             console.error('There was an error:', error);
