@@ -1,8 +1,10 @@
-import { Component } from '@angular/core';
-import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-import { filter } from 'rxjs/operators';
-import {NgIf} from "@angular/common";
+import {Component} from '@angular/core';
+import {ActivatedRoute, NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
+import {filter, mergeMap} from 'rxjs/operators';
+// import {NgIf} from "@angular/common";
 import {AuthService} from "./core/services/authService/auth.service";
+import {NgIf} from "@angular/common";
+import {map} from "rxjs";
 
 @Component({
   selector: 'app-root',
@@ -16,15 +18,18 @@ export class AppComponent {
   title = 'app';
   showNavbar: boolean = true;
 
-  constructor(private router: Router, private authService: AuthService) {
-    // ({}as any).someMethod();
-
+  constructor(private router: Router, private activatedRoute: ActivatedRoute, private authService: AuthService) {
     this.router.events.pipe(
-      filter((event): event is NavigationEnd => event instanceof NavigationEnd)
-    ).subscribe((event: NavigationEnd) => {
-      // Assuming '/page-not-found' is a segment in your 404 page URL
-      // Adjust the condition based on your app's routing logic
-      this.showNavbar = !['/login'].includes(event.urlAfterRedirects);
+      filter(event => event instanceof NavigationEnd),
+      map(() => this.activatedRoute),
+      map(route => {
+        while (route.firstChild) route = route.firstChild;
+        return route;
+      }),
+      mergeMap(route => route.data)
+    ).subscribe(data => {
+      const {showNavbar: showNavbar1} = data;
+      this.showNavbar = showNavbar1 !== false; // Default to true if undefined
     });
   }
 

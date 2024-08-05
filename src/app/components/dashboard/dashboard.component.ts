@@ -16,16 +16,17 @@ import {
 import {animate, style, transition, trigger} from "@angular/animations";
 import {AlertService} from "../../core/services/alerts/alert-service.service";
 import {HasRoleDirective} from "../../core/derectives/has-role.directive";
+import {catchError, map, of} from "rxjs";
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-    imports: [
-        NgOptimizedImage,
-        RouterLink,
-        NgIf,
-        HasRoleDirective
-    ],
+  imports: [
+    NgOptimizedImage,
+    RouterLink,
+    NgIf,
+    HasRoleDirective
+  ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css',
   animations: [
@@ -61,6 +62,7 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadNoOfStudents();
+    console.log('eta pugyo')
     this.loadNoOfFailedStudentsInLatestExam();
     this.loadNoOfComingExams();
     this.alertService.getShowAlert().subscribe(show => {
@@ -83,19 +85,22 @@ export class DashboardComponent implements OnInit {
   loadNoOfStudents() {
     this.noOfStudentsService.getNofStudents().subscribe((data) => {
       this.noOfStudentsResponse = data;
-    })
+    }
+    )
   }
 
   loadNoOfFailedStudentsInLatestExam() {
     this.noOfFailedStudentsInLatestExamService.getNoOfFailedStudentsInLatestExam().subscribe((data) => {
-      this.noOfFailedStudentsInLatestExamResponse = data;
-    })
+        this.noOfFailedStudentsInLatestExamResponse = data;
+      }
+    )
   }
 
   loadNoOfComingExams() {
     this.getNoOfComingExamsService.getNoOfComingExamsService().subscribe((data) => {
-      this.noOfComingExamsResponse = data;
-    })
+        this.noOfComingExamsResponse = data;
+      }
+    )
   }
 
   hideAlert(): void {

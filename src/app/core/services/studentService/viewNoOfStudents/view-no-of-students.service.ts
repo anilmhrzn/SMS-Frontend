@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
+import {tap} from "rxjs/operators";
+import {catchError, of} from "rxjs";
 
 @Injectable({
   providedIn: 'root'

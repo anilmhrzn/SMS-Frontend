@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {CanActivate, Router} from '@angular/router';
 import {AuthService} from "../services/authService/auth.service";
+import Swal from "sweetalert2";
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,6 @@ export class AuthGuard implements CanActivate {
   }
 
   canActivate(): boolean {
-    // console.log('AuthGuard#canActivate called');
     return this.authService.isLoggedIn();
   }
 }

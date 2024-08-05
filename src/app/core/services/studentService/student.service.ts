@@ -20,10 +20,7 @@ export class StudentService {
       queryParams += `&name=${name}`;
     }
     let data = this.authService.getUser()
-    console.log(data.roles)
     if (data.roles.includes('ROLE_USER')) {
-
-      console.log(data.id)
       return this.http.get<StudentList>(`${this.apiUrl}/users/students/${queryParams}&user_id=${data.id}`,)
     } else {
       if (semester !== null && semester !== 0) {

@@ -12,11 +12,7 @@ export class NoOfFailedStudentsInLatestExamService {
     private http: HttpClient
   ) { }
   getNoOfFailedStudentsInLatestExam(){
-    const token = localStorage.getItem('auth_token');
-    // const headers= {
-    const headers = {'Authorization': `${token}`}; // Prepare the headers with the token
-
-    return this.http.get<getNoOfFailedStudentsInLatestExamResponse>(`${this.apiUrl}/exam/latest/no-of-failed-students`,  {headers});
+    return this.http.get<getNoOfFailedStudentsInLatestExamResponse>(`${this.apiUrl}/exam/latest/no-of-failed-students`  );
   }
 }
 export interface getNoOfFailedStudentsInLatestExamResponse {

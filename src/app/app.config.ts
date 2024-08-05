@@ -10,10 +10,11 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {AuthInterceptor} from "./interceptor/auth-interceptor.interceptor";
+import {CustomErrorHandlerService} from "./core/services/CustomErrorHandler/custom-error-handler.service";
 // import {CustomErrorHandlerService} from "./core/services/CustomErrorHandler/custom-error-handler.service";
 
-
+// import Swal from 'sweetalert2';
 export let appConfig: ApplicationConfig;
 appConfig = {
-  providers: [provideZoneChangeDetection({eventCoalescing: true}), provideRouter(routes), provideHttpClient(withInterceptorsFromDi()),{provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}, provideAnimationsAsync(), {provide:MatDialogRef,useValue:{}},BrowserAnimationsModule,MatSnackBarModule],
+  providers: [provideZoneChangeDetection({eventCoalescing: true}), provideRouter(routes), provideHttpClient(withInterceptorsFromDi()),{provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}, provideAnimationsAsync(), {provide:MatDialogRef,useValue:{}},BrowserAnimationsModule,MatSnackBarModule,{provide: ErrorHandler, useClass: CustomErrorHandlerService}],
 };

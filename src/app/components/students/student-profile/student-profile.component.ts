@@ -44,6 +44,7 @@ export class StudentProfileComponent implements OnInit {
 
 
   }
-
-
+  goToEditStudent() {
+    this.router.navigate([`/student/${this.studentProfile?.id}/edit`]).then()
+  }
 }

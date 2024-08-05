@@ -1,12 +1,17 @@
-import { Component, OnInit } from '@angular/core';
-import { Student, StudentService, StudentList } from "../../../core/services/studentService/student.service";
-import { Router, RouterLink } from "@angular/router";
-import { NgForOf, NgIf } from "@angular/common";
-import { AlertComponent } from "@coreui/angular";
-import { HasRoleDirective } from "../../../core/derectives/has-role.directive";
-import { FormControl, FormGroup, ReactiveFormsModule } from "@angular/forms";
-import { AllSemesterResponse, GetAllSemesterService } from "../../../core/services/semesterService/getAllSemester/get-all-semester.service";
+import {Component, OnInit} from '@angular/core';
+import {Student, StudentService, StudentList} from "../../../core/services/studentService/student.service";
+import {Router, RouterLink} from "@angular/router";
+import {NgForOf, NgIf} from "@angular/common";
+import {AlertComponent} from "@coreui/angular";
+import {HasRoleDirective} from "../../../core/derectives/has-role.directive";
+import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
+import {
+  AllSemesterResponse,
+  GetAllSemesterService
+} from "../../../core/services/semesterService/getAllSemester/get-all-semester.service";
 import {AuthService} from "../../../core/services/authService/auth.service";
+import {HttpClient, HttpErrorResponse} from "@angular/common/http";
+import Swal from "sweetalert2";
 
 @Component({
   selector: 'app-student',
@@ -35,7 +40,8 @@ export class StudentComponent implements OnInit {
     semester: new FormControl(0)
   });
 
-  constructor(private studentService: StudentService, private router: Router, private getAllSemester: GetAllSemesterService,private authService:AuthService) {}
+  constructor(private studentService: StudentService, private router: Router, private getAllSemester: GetAllSemesterService, private authService: AuthService) {
+  }
 
   ngOnInit(): void {
     this.onSearchSubmit(1);
@@ -47,10 +53,18 @@ export class StudentComponent implements OnInit {
       next: (data: AllSemesterResponse[]) => {
         this.semesterResponse = data;
       },
-      error: (error) => {
-        if (error.status === 401) {
-          this.router.navigate(['/login']).then();
-        }
+      error: (error: HttpErrorResponse) => {
+        // console.log(error)
+        // Swal.fire(
+        //   {
+        //     title: error,
+        //     icon: 'error',
+        //     showCancelButton: false,
+        //     confirmButtonText: 'OK',
+        //   }
+        // ).then(r => {
+        //   // this.router.navigate(['/login']).then();
+        // })
       }
     });
   }
@@ -76,6 +90,7 @@ export class StudentComponent implements OnInit {
       }
     });
   }
+
 
   protected readonly Math = Math;
 }

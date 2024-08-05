@@ -58,14 +58,15 @@ export class AddMarksOfSpecificSubjectComponent implements OnInit {
   submitForm(files: FileList | null): void {
     if (!files || files.length === 0) {
       // this.snackbar.
-      this.snackbar.open('Please select a file.', 'Close', {duration: 2000,
-      panelClass: ['custom-snackbar-error']});
+      this.snackbar.open('Please select a file.', 'Close', {duration: 2000});
       return;
     }
 
     const file = files[0];
     if (file.type !== 'text/csv' && !file.name.endsWith('.csv')) {
-      this.errorMessage = 'Please upload a valid CSV file.';
+      // this.errorMessage = 'Please upload a valid CSV file.';
+      this.snackbar.open('Please upload a valid CSV file.', 'Close', {duration: 2000});
+
       return;
     }
 
@@ -82,7 +83,9 @@ export class AddMarksOfSpecificSubjectComponent implements OnInit {
     if (lines.length > 0) {
       const headers = lines[0].split(',').map(header => header.trim());
       if (headers.length !== 2 || headers[0] !== 'StudentID' || headers[1] !== 'Marks') {
-        this.errorMessage = 'CSV file must have exactly two headers: StudentID and Marks.';
+        // this.errorMessage = 'CSV file must have exactly two headers: StudentID and Marks.';
+        this.snackbar.open('CSV file must have exactly two headers: StudentID and Marks.', 'Close', {duration: 2000});
+
         return;
       }
 
@@ -90,7 +93,9 @@ export class AddMarksOfSpecificSubjectComponent implements OnInit {
       for (let i = 1; i < lines.length; i++) {
         const row = lines[i].split(',').map(value => value.trim());
         if (row.length !== 2) {
-          this.errorMessage = `Row ${i + 1} does not have exactly two columns.`;
+          // this.errorMessage = `Row ${i + 1} does not have exactly two columns.`;
+          this.snackbar.open(`Row ${i + 1} does not have exactly two columns.`, 'Close', {duration: 2000});
+
           return;
         }
 
@@ -98,7 +103,9 @@ export class AddMarksOfSpecificSubjectComponent implements OnInit {
         const marks = row[1];
 
         if (!this.isInteger(studentID) || !this.isInteger(marks)) {
-          this.errorMessage = `Row ${i + 1} contains non-integer values.`;
+          // this.errorMessage = `Row ${i + 1} contains non-integer values.`;
+          this.snackbar.open(`Row ${i + 1} contains non-integer values.`, 'Close', {duration: 2000});
+
           return;
         }
 
@@ -107,7 +114,9 @@ export class AddMarksOfSpecificSubjectComponent implements OnInit {
 
       this.errorMessage = null;
       if (this.examId === undefined) {
-        alert('Please select an exam.');
+        this.snackbar.open(`Please select an exam.`, 'Close', {duration: 2000});
+
+        // alert('Please select an exam.');
         this.router.navigate(['/exams']);
         return;
       }

@@ -6,6 +6,7 @@ import {AuthService} from "../../core/services/authService/auth.service";
 import {AlertComponent} from "@coreui/angular";
 import {AlertService} from '../../core/services/alerts/alert-service.service';
 import {animate, style, transition, trigger} from "@angular/animations";
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-login',
@@ -29,12 +30,13 @@ import {animate, style, transition, trigger} from "@angular/animations";
     ])
   ]
 })
-export class LoginComponent  {
+export class LoginComponent {
   constructor(private authService: AuthService, private router: Router, private alertService: AlertService, private cdr: ChangeDetectorRef) {
   }
+
   showAlert: boolean = false;
   alertMessage: string = '';
-alertColor: string = 'alert-danger';
+  alertColor: string = 'alert-danger';
   loginForm = new FormGroup(
     {
       email: new FormControl('', [Validators.required, Validators.email]),
@@ -51,24 +53,55 @@ alertColor: string = 'alert-danger';
 
   onLogin(): void {
     if (this.loginForm.valid) {
+      Swal.fire({
+        title: 'Please wait...',
+        text: 'Processing your request',
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        }
+      });
       this.authService.login(<string>this.loginForm.value.email, <string>this.loginForm.value.password).subscribe({
         next: (response: any) => {
-
+          Swal.close();
           this.router.navigate(['dashboard']).then(r => {
-            this.alertService.setAlertMessage('Login successful!');
-            this.alertService.setShowAlert(true);
-            this.alertService.setAlertColor('alert-success');
-          });
+            Swal.fire({
+              // position: "top-end",
+              icon: "success",
+              title: "Logged in successfully!",
+              showConfirmButton: false,
+              timer: 1500
+            }).then(r => {
 
+            });
+          });
         },
         error: (error: any) => {
-          this.alertService.setAlertMessage('Login failed ! Please check your credentials.');
-          this.setAlert();
+          // this.alertService.setAlertMessage('Login failed ! Please check your credentials.');
+          // this.setAlert();
+          Swal.close();
+          Swal.fire({
+            // position: "top-end",
+            icon: "error",
+            title: "Login failed ! Please check your credentials.",
+            showConfirmButton: false,
+            timer: 1500
+          }).then(r => {
+          });
         }
       });
     } else {
-      this.alertService.setAlertMessage('Please fill your credentials to login.');
-      this.setAlert();
+      // this.alertService.setAlertMessage('Please fill your credentials to login.');
+      // this.setAlert();
+      // Swal.close();
+      Swal.fire({
+        // position: "top-end",
+        icon: "error",
+        title: "Please fill your credentials to login.",
+        showConfirmButton: false,
+        timer: 1500
+      }).then(r => {
+      });
     }
 
   }
