@@ -1,12 +1,23 @@
-/* You can add global styles to this file, and also import other style files */
 
+/* You can add global styles to this file, and also import other style files */
+@import url("http://fonts.googleapis.com/css?family=Oswald:400,300,700");
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .custom-snackbar-success {
   background-color: green; /* Green */
   color: #ffffff; /* White */
 }
-
+.dancing-script{
+  font-family: 'Dancing Script', cursive !important;
+}
+.oswald-script{
+  font-family: 'Oswald', sans-serif !important;
+}
+.roboto-mono{
+  font-family: 'Roboto Mono', monospace !important;
+}
 .custom-snackbar-error {
   background-color: #f44336; /* Red */
   color: #ffffff; /* White */
@@ -15,4 +26,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .custom-snackbar-info {
   background-color: #2196f3; /* Blue */
   color: #ffffff; /* White */
+}
+.cursor-pointer {
+  cursor: pointer;
 }

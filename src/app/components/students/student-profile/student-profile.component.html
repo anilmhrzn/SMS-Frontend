@@ -14,7 +14,7 @@
 <div class="container mt-4 mb-4 p-3 d-flex justify-content-center">
   <div class="card  p-4">
     <div class=" image d-flex flex-column justify-content-center align-items-center">
-      <button class="btn btn-secondary"><img src="http://localhost:8080/uploads/photos/{{studentProfile?.photo}}"
+      <button class="btn btn-secondary"><img *ngIf="studentProfile!==undefined||null" src="http://localhost:8080/uploads/photos/{{studentProfile?.photo}}"
                                              class="img-fluid" width="500" /></button>
       <div class="border border-5 border-top border-danger rounded-bottom  w-100 mt-3"></div>
       <span class="name mt-3  ">{{ studentProfile?.name }}</span>
@@ -29,8 +29,9 @@
         </div>
 
       </div>
-      <div class=" d-flex mt-2">
-        <button class="btn btn-dark" (click)="goToEditStudent()">Edit Profile</button>
+      <div class=" d-flex mt-2" *ngIf="authService.hasRole('ROLE_ADMIN')">
+        <button class="btn btn-dark" (click)="goToEditStudent()">Edit Profile <fa-icon class="ml-2
+          " [icon]="faUserPen"></fa-icon> </button>
       </div>
     </div>
   </div>

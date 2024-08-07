@@ -17,6 +17,8 @@ import {animate, style, transition, trigger} from "@angular/animations";
 import {AlertService} from "../../core/services/alerts/alert-service.service";
 import {HasRoleDirective} from "../../core/derectives/has-role.directive";
 import {catchError, map, of} from "rxjs";
+import {FaIconComponent} from "@fortawesome/angular-fontawesome";
+import {faCalendarCheck, faChalkboardTeacher, faUserGraduate, faUsersSlash} from "@fortawesome/free-solid-svg-icons";
 
 @Component({
   selector: 'app-dashboard',
@@ -25,7 +27,8 @@ import {catchError, map, of} from "rxjs";
     NgOptimizedImage,
     RouterLink,
     NgIf,
-    HasRoleDirective
+    HasRoleDirective,
+    FaIconComponent
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css',
@@ -110,4 +113,9 @@ export class DashboardComponent implements OnInit {
     this.alertService.getShowAlert().subscribe(show => {
     })
   }
+
+  protected readonly faUserGraduate = faUserGraduate;
+  protected readonly faUsersSlash = faUsersSlash;
+  protected readonly faCalendarCheck = faCalendarCheck;
+  protected readonly faChalkboardTeacher = faChalkboardTeacher;
 }

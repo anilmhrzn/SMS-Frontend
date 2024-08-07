@@ -8,6 +8,8 @@ import {
 } from "../../../core/services/subjectsService/allSubjectsService/all-subject-service.service";
 import {AddExamServiceService} from "../../../core/services/examservice/addExamService/add-exam-service.service";
 import {AlertService} from "../../../core/services/alerts/alert-service.service";
+import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
+import {faCirclePlus} from "@fortawesome/free-solid-svg-icons";
 
 @Component({
   selector: 'app-add-exam',
@@ -17,7 +19,8 @@ import {AlertService} from "../../../core/services/alerts/alert-service.service"
     NgForOf,
     NgIf,
     ReactiveFormsModule,
-    NgClass
+    NgClass,
+    FontAwesomeModule
   ],
   templateUrl: './add-exam.component.html',
   styleUrl: './add-exam.component.css'
@@ -91,4 +94,5 @@ export class AddExamComponent implements OnInit {
   }
 
   protected readonly Array = Array;
+  protected readonly faCirclePlus = faCirclePlus;
 }

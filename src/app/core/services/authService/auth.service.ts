@@ -13,6 +13,10 @@ export class AuthService {
   constructor(private http: HttpClient, private router: Router) {
 
   }
+  logUnauthorizedAccess(url: string): void {
+    console.log(`Unauthorized access attempt to ${url} by user with roles: ${this.getUser().roles}`);
+    // You can also send this log to a server or logging service if needed
+  }
 
   login(email: string, password: string): Observable<any> {
     const headers = new HttpHeaders({'Content-Type': 'application/json'});

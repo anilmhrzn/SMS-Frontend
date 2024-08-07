@@ -1,7 +1,7 @@
-
-<nav  class="navbar navbar-inverse navbar-expand-lg navbar-light gradient-custom " *ngIf="showNavbar">
-  <a class="navbar-brand" routerLink="/all">SMS</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+<nav class="navbar navbar-inverse navbar-expand-lg navbar-light gradient-custom " *ngIf="showNavbar">
+  <a class="navbar-brand" routerLink="/all">SMS <span *ngIf="authService.hasRole('ROLE_ADMIN')">ADMIN</span><span *ngIf="authService.hasRole('ROLE_USER')">USER</span></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
+          aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarText">
@@ -10,13 +10,18 @@
         <a class="nav-link" routerLinkActive="active" routerLink="/dashboard">Dashboard</a>
       </li>
       <li class="nav-item ">
-        <a class="nav-link" routerLinkActive="active" routerLink="/students">Students</a>
+        <a class="nav-link" routerLinkActive="active" routerLink="/students"><fa-icon class="mr-2" [icon]="faUsers"></fa-icon>Students </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" routerLinkActive="active" routerLink="/exams">Exams</a>
+        <a class="nav-link" routerLinkActive="active" routerLink="/exams"><fa-icon class="mr-2" [icon]="faFilePen"></fa-icon>Exams</a>
       </li>
+      <li class="nav-item" *appHasRole="'ROLE_ADMIN'">
+        <a class="nav-link" routerLinkActive="active" routerLink="/teachers"><fa-icon class="mr-2" [icon]="faPersonChalkboard"></fa-icon>Teachers</a>
+      </li>
+    </ul>
+    <ul class="navbar-nav ml-auto">
       <li class="nav-item">
-        <a class="nav-link" (click)="logout()">logout</a>
+        <a class="cursor-pointer roboto-mono"  (click)="logout()"><fa-icon class="mr-2" [icon]="faRightFromBracket"></fa-icon>Logout </a>
       </li>
     </ul>
   </div>

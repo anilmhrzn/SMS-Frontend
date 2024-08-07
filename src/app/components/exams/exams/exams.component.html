@@ -39,7 +39,7 @@
       </div>
     </div>
     <div class="col-md-2">
-      <button type="submit" class="btn btn-primary btn-block">Search</button>
+      <button type="submit" class="btn btn-primary btn-block"><fa-icon class="mr-2" [icon]="faSearch"></fa-icon>Search </button>
     </div>
   </form>
 </div>
@@ -52,12 +52,12 @@
 
   <table class="table w-75 table-hover" *ngIf="exams.length">
     <thead>
-    <tr class="gradient-custom">
-      <th scope="col">Exam Id</th>
-      <th scope="col">Name</th>
-      <th scope="col">date</th>
-      <th scope="col">subject</th>
-      <th scope="col">options</th>
+    <tr class="gradient-custom text-center">
+      <th scope="col" >Exam Id</th>
+      <th scope="col" >Name</th>
+      <th scope="col" >date</th>
+      <th scope="col" >subject</th>
+      <th scope="col" ><fa-icon class="mr-2" [icon]="faScrewdriverWrench"></fa-icon> options</th>
     </tr>
     </thead>
     <tbody class="table-group-divider">
@@ -68,11 +68,11 @@
       <td>{{ exam.subject }}</td>
       <td>
         <button *appHasRole="'ROLE_USER'" type="button" class="btn m-2  btn-info" (click)="goToAddMarks(exam.id,exam.subject,exam.name,exam.date)"
-                routerLink="/exams/marks/add">Add marks
+                routerLink="/exams/marks/add"><fa-icon class="mr-2" [icon]="faCirclePlus"></fa-icon>Add marks
         </button>
         <button type="button" class="btn m-2  btn-success"
                 (click)="viewMarksByExamId(exam.id,exam.subject,exam.name,exam.date)" routerLink="/exams/marks/view">
-          View marks
+          <fa-icon class="mr-2" [icon]="faEye"></fa-icon>View marks
         </button>
 
       </td>

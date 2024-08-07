@@ -6,7 +6,8 @@
   </ol>
 </nav>
 
-<button type="button" *appHasRole="'ROLE_ADMIN'" class="btn m-2  btn-info" routerLink="/students/add">Add student
+<button type="button" *appHasRole="'ROLE_ADMIN'" class="btn m-2  btn-info" routerLink="/students/add"><fa-icon class="mr-2" [icon]="faUserPlus"></fa-icon>Add student
+
 </button>
 <div class="container-fluid bg-light py-2">
   <form [formGroup]="StudentSearchForm" (ngSubmit)="onSearchSubmit(1)"
@@ -28,7 +29,7 @@
       </div>
     </div>
     <div class="col-md-2">
-      <button type="submit" class="btn btn-primary btn-block">Search</button>
+      <button type="submit" class="btn btn-primary btn-block"><fa-icon class="mr-2" [icon]="faMagnifyingGlass"></fa-icon>Search  </button>
     </div>
   </form>
 </div>
@@ -45,7 +46,7 @@
     </tr>
     </thead>
     <tbody class="table-group-divider">
-    <tr *ngFor="let student of students" (click)="studentProfile(student.id)">
+    <tr *ngFor="let student of students" (click)="studentProfile(student.id)" matTooltip="click to view student info">
       <th scope="row">{{ student.id }}</th>
       <td>{{ student.name }}</td>
       <td>{{ student.email }}</td>

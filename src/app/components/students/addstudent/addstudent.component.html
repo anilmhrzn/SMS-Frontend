@@ -42,7 +42,7 @@
     <div class="col-md-6">
       <label for="photo" class="form-label">Photo <span class="text-danger">*</span></label>
       <div>
-        <img *ngIf="studentProfile" src="http://localhost:8080/uploads/photos/{{studentProfile?.photo}}"
+        <img *ngIf="studentProfile!==undefined||null" src="http://localhost:8080/uploads/photos/{{studentProfile?.photo}}"
              class="img-fluid" width="100"/>
         <input id="photo" type="file" class="form-control" (change)="onFileSelect($event)"
 

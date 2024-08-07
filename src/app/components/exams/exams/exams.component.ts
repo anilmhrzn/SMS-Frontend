@@ -20,6 +20,8 @@ import {
   SubjectOfUserResponse,
   ViewSubjectOfUserService
 } from "../../../core/services/UserService/ViewSubjectOfUserService/view-subject-of-user.service";
+import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
+import {faCirclePlus, faEye, faScrewdriverWrench, faSearch} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-exams',
@@ -30,6 +32,7 @@ import {
     RouterLink,
     ReactiveFormsModule,
     HasRoleDirective,
+    FontAwesomeModule
   ],
   templateUrl: './exams.component.html',
   styleUrl: './exams.component.css',
@@ -46,6 +49,8 @@ import {
   ]
 })
 export class ExamsComponent implements OnInit {
+  faEye = faEye;
+  faSearch = faSearch;
   subjects: SubjectList[] = [];
 
   exams: ExamList[] = [];
@@ -195,4 +200,7 @@ export class ExamsComponent implements OnInit {
     void {
     this.showAlert = false;
   }
+
+  protected readonly faCirclePlus = faCirclePlus;
+  protected readonly faScrewdriverWrench = faScrewdriverWrench;
 }

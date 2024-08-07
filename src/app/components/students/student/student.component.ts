@@ -12,7 +12,9 @@ import {
 import {AuthService} from "../../../core/services/authService/auth.service";
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import Swal from "sweetalert2";
-
+import {FaIconComponent, FontAwesomeModule} from "@fortawesome/angular-fontawesome";
+import {faMagnifyingGlass,faUserPlus} from "@fortawesome/free-solid-svg-icons";
+import {MatTooltip} from "@angular/material/tooltip";
 @Component({
   selector: 'app-student',
   standalone: true,
@@ -23,11 +25,15 @@ import Swal from "sweetalert2";
     AlertComponent,
     HasRoleDirective,
     ReactiveFormsModule,
+    FaIconComponent,
+    MatTooltip,
   ],
   templateUrl: './student.component.html',
   styleUrls: ['./student.component.css'],
 })
 export class StudentComponent implements OnInit {
+  faMagnifyingGlass=faMagnifyingGlass;
+  faUserPlus=faUserPlus;
   students: Student[] = [];
   total: number = 0;
   page: number = 1;

@@ -8,6 +8,11 @@ import {
 import {NgForOf, NgIf} from "@angular/common";
 import {saveAs} from 'file-saver';
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {HttpEventType} from "@angular/common/http";
+import Swal from "sweetalert2";
+import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
+
+import {faDownload, faFile, faSearch} from "@fortawesome/free-solid-svg-icons";
 
 interface UploadResponse {
   message?: string;
@@ -20,15 +25,18 @@ interface UploadResponse {
   imports: [
     RouterLink,
     NgIf,
-    NgForOf
+    NgForOf,
+    FontAwesomeModule
   ],
   templateUrl: './add-marks-of-specific-subject.component.html',
   styleUrl: './add-marks-of-specific-subject.component.css'
 })
 export class AddMarksOfSpecificSubjectComponent implements OnInit {
+  faDownload=faDownload;
   data = [
     {StudentID: 1, Marks: 55},
   ];
+
   examId: number | undefined;
   subjectName: String | undefined;
   examName: String | undefined;
@@ -80,24 +88,38 @@ export class AddMarksOfSpecificSubjectComponent implements OnInit {
 
   validateCSV(content: string, file: File): void {
     const lines = content.split('\n');
+    console.log('lines', lines);
     if (lines.length > 0) {
       const headers = lines[0].split(',').map(header => header.trim());
       if (headers.length !== 2 || headers[0] !== 'StudentID' || headers[1] !== 'Marks') {
         // this.errorMessage = 'CSV file must have exactly two headers: StudentID and Marks.';
-        this.snackbar.open('CSV file must have exactly two headers: StudentID and Marks.', 'Close', {duration: 2000});
+        this.snackbar.open('CSV file must have exactly two headers: StudentID and Marks.', 'Close' );
 
         return;
       }
 
       const data = [];
       for (let i = 1; i < lines.length; i++) {
-        const row = lines[i].split(',').map(value => value.trim());
-        if (row.length !== 2) {
-          // this.errorMessage = `Row ${i + 1} does not have exactly two columns.`;
-          this.snackbar.open(`Row ${i + 1} does not have exactly two columns.`, 'Close', {duration: 2000});
-
-          return;
+        if (lines[i].trim() === '') {
+          continue;
         }
+        // console.log('lines[i]', lines[i]);
+        const row = lines[i].split(',').map(value => value.trim());
+        // console.log(lines[i+1])
+        // if (row.length === 1) {
+        //   this.snackbar.open(`Row ${i} does not have exactly two columns.`, 'Close', {duration: 2000});
+        //   return;
+        // }
+
+        // if(row===['']){
+
+        // }
+        // if (row.length !== 2) {
+        //   // this.errorMessage = `Row ${i + 1} does not have exactly two columns.`;
+        //   this.snackbar.open(`Row ${i} does not have exactly two columns.`, 'Close', {duration: 2000});
+        //
+        //   return;
+        // }
 
         const studentID = row[0];
         const marks = row[1];
@@ -110,6 +132,7 @@ export class AddMarksOfSpecificSubjectComponent implements OnInit {
         }
 
         data.push({StudentID: studentID, Marks: marks});
+        // console.log(data)
       }
 
       this.errorMessage = null;
@@ -120,6 +143,8 @@ export class AddMarksOfSpecificSubjectComponent implements OnInit {
         this.router.navigate(['/exams']);
         return;
       }
+      console.log(file)
+      let count = 1;
       this.fileUploadService.uploadFile(this.examId, file).subscribe(
         // response => {
         //   console.log('Data successfully uploaded', response);
@@ -129,8 +154,25 @@ export class AddMarksOfSpecificSubjectComponent implements OnInit {
         // }
         {
           next: response => {
-            // this.uploadMessage = response;
-            console.log('Data successfully uploaded', response);
+            if (response.type === HttpEventType.Response) {
+              if (response.status === 200 && response.body) {
+                this.uploadMessage = response.body;
+                const errorList = this.uploadMessage.error?.map(err => `<br><span
+ class="text-danger">${err.row}: ${err.reason}</span><br>`).join('') || '';
+
+                Swal.fire({
+                  title:
+                    'Success',
+                  html:
+                    `
+                    <span [ngIf]="uploadMessage.message">Valid ` + this.uploadMessage.message + `</span>
+                       ` + errorList + `
+                  `,
+                  showCloseButton: true,
+                  // 'success'
+                })
+              }
+            }
 
           },
           error: error => {
@@ -161,4 +203,7 @@ export class AddMarksOfSpecificSubjectComponent implements OnInit {
     const blob = new Blob([csvData], {type: 'text/csv;charset=utf-8;'});
     saveAs(blob, 'data.csv');
   }
+
+  protected readonly faSearch = faSearch;
+  protected readonly faFile = faFile;
 }
