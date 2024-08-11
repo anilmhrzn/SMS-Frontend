@@ -3,6 +3,7 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 import {Router} from "@angular/router";
 import {AuthService} from "../authService/auth.service";
 import {HttpErrorResponse} from "@angular/common/http";
+import {log} from "@angular-devkit/build-angular/src/builders/ssr-dev-server";
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +19,8 @@ export class CustomErrorHandlerService implements ErrorHandler{
     const router = this.injector.get(Router);
     const authService = this.injector.get(AuthService);
     // console.log(typeof (error))
-    console.log(error)
+    // console.log(error)
+    // console.log(error)
     // console.log(JSON.stringify(error))
     if (error instanceof HttpErrorResponse) {
       // console.log('eta')
@@ -31,15 +33,10 @@ export class CustomErrorHandlerService implements ErrorHandler{
 
         // router.navigate(['/login']);
         return ;
-      } else {
-
-        // Other server errors
-        // console.error('Server error:', error.message);
-        alert(`Server error: ${error.message}`);
       }
     } else {
-      this.snackbar.open('An error occurred,we are already working on it', 'Close', {duration: 2000});
-
+      this.snackbar.open('An error occurred,we are already working on it! Please try again later', 'Close', {duration: 2000});
+      // console.log('toir')
       // Client-side error
       // console.error('Client error:', error.message);
       // alert(`Client error: ${error.message}`);

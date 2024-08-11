@@ -22,6 +22,11 @@ import {
 } from "../../../core/services/UserService/ViewSubjectOfUserService/view-subject-of-user.service";
 import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 import {faCirclePlus, faEye, faScrewdriverWrench, faSearch} from '@fortawesome/free-solid-svg-icons';
+import {
+  AllSemesterResponse,
+  GetAllSemesterService
+} from "../../../core/services/semesterService/getAllSemester/get-all-semester.service";
+import {HttpErrorResponse} from "@angular/common/http";
 
 @Component({
   selector: 'app-exams',
@@ -62,6 +67,8 @@ export class ExamsComponent implements OnInit {
   showAlert: boolean = false;
   alertMessage: string = '';
   alertColor: string = 'alert-danger';
+  semesterResponse: AllSemesterResponse[] = [];
+
 
   constructor(private fb: FormBuilder,
               private allSubjects: AllSubjectServiceService,
@@ -72,11 +79,12 @@ export class ExamsComponent implements OnInit {
               private authService: AuthService,
               private cdr: ChangeDetectorRef,
               private viewSubjectOfUserServiceService: ViewSubjectOfUserService,
+              private getAllSemester: GetAllSemesterService,
   ) {
     this.ExamSearchForm = this.fb.group({
       name: [''],
       date: [''],
-      subject: ['']
+      semester: ['']
     });
 
   }
@@ -100,7 +108,8 @@ export class ExamsComponent implements OnInit {
           });
       }
     });
-    this.loadSubjects();
+    // this.loadSubjects();
+    this.loadSemester()
     if (this.authService.hasRole('ROLE_USER')) {
       this.viewSubjectOfUserServiceService.subjectOfUser().subscribe({
         next: (data: SubjectOfUserResponse) => {
@@ -135,14 +144,24 @@ export class ExamsComponent implements OnInit {
       }
     )
   }
-
+  loadSemester() {
+    this.getAllSemester.loadAllSemester().subscribe({
+      next: (data: AllSemesterResponse[]) => {
+        this.semesterResponse = data;
+        console.log(this.semesterResponse)
+      },
+      error: (error: HttpErrorResponse) => {
+        console.log(error)
+      }
+    });
+  }
 
   onSearchSubmit(page: number) {
     this.page = page;
     const name = this.ExamSearchForm.get('name')?.value;
     const date = this.ExamSearchForm.get('date')?.value;
-    const subject = this.ExamSearchForm.get('subject')?.value;
-    this.searchExamServiceService.searchExam(name, date, subject, this.page, this.limit).subscribe({
+    const semester = this.ExamSearchForm.get('semester')?.value;
+    this.searchExamServiceService.searchExam(name, date, semester, this.page, this.limit).subscribe({
       next: (data: any) => {
         this.exams = data.exams;
         this.total = data.total;

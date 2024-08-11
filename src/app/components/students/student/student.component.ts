@@ -60,17 +60,7 @@ export class StudentComponent implements OnInit {
         this.semesterResponse = data;
       },
       error: (error: HttpErrorResponse) => {
-        // console.log(error)
-        // Swal.fire(
-        //   {
-        //     title: error,
-        //     icon: 'error',
-        //     showCancelButton: false,
-        //     confirmButtonText: 'OK',
-        //   }
-        // ).then(r => {
-        //   // this.router.navigate(['/login']).then();
-        // })
+        console.log(error)
       }
     });
   }

@@ -32,9 +32,9 @@
 
     <div class="col-md-2 pt-3" *appHasRole="'ROLE_ADMIN'">
       <div class="form-group">
-        <select id="inputState" class="form-control" formControlName="subject">
-          <option value={{null}}>select subject</option>
-          <option *ngFor="let subject of subjects" [value]="subject.id">{{ subject.name }}</option>
+        <select id="inputState" class="form-control" formControlName="semester">
+          <option value={{null}}>select semester</option>
+          <option *ngFor="let semester of semesterResponse" [value]="semester.id">{{ semester.semester }}</option>
         </select>
       </div>
     </div>
@@ -56,25 +56,25 @@
       <th scope="col" >Exam Id</th>
       <th scope="col" >Name</th>
       <th scope="col" >date</th>
-      <th scope="col" >subject</th>
+      <th scope="col" >Semester</th>
       <th scope="col" ><fa-icon class="mr-2" [icon]="faScrewdriverWrench"></fa-icon> options</th>
     </tr>
     </thead>
     <tbody class="table-group-divider">
     <tr *ngFor="let exam of exams">
-      <th scope="row">{{ exam.id }}</th>
-      <td>{{ exam.name }}</td>
-      <td>{{ exam.date }}</td>
-      <td>{{ exam.subject }}</td>
-      <td>
-        <button *appHasRole="'ROLE_USER'" type="button" class="btn m-2  btn-info" (click)="goToAddMarks(exam.id,exam.subject,exam.name,exam.date)"
+      <th class="text-center" scope="row">{{ exam.id }}</th>
+      <td class="text-center">{{ exam.name }}</td>
+      <td class="text-center">{{ exam.date }}</td>
+      <td class="text-center">{{ exam.semester }}</td>
+
+      <td class="d-flex justify-content-center align-items-center">
+        <button *appHasRole="'ROLE_USER'" type="button" class="btn m-2  btn-info" (click)="goToAddMarks(exam.id,exam.semester,exam.name,exam.date)"
                 routerLink="/exams/marks/add"><fa-icon class="mr-2" [icon]="faCirclePlus"></fa-icon>Add marks
         </button>
         <button type="button" class="btn m-2  btn-success"
-                (click)="viewMarksByExamId(exam.id,exam.subject,exam.name,exam.date)" routerLink="/exams/marks/view">
+                (click)="viewMarksByExamId(exam.id,exam.semester,exam.name,exam.date)" routerLink="/exams/marks/view">
           <fa-icon class="mr-2" [icon]="faEye"></fa-icon>View marks
         </button>
-
       </td>
 
     </tbody>

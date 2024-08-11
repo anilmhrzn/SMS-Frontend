@@ -1,1 +1,73 @@
-<p>get-users works!</p>
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb bg-transparent">
+    <li class="breadcrumb-item " aria-current="page">
+      <a routerLink="/students" href="#">Teachers</a>
+    </li>
+  </ol>
+</nav>
+
+<!--<button type="button" *appHasRole="'ROLE_ADMIN'" class="btn m-2  btn-info" routerLink="/students/add"><fa-icon class="mr-2" [icon]="faUserPlus"></fa-icon>Add student-->
+
+<!--</button>-->
+<div class="container-fluid bg-light py-2">
+  <form [formGroup]="TeacherSearchForm" (ngSubmit)="submitSearch(1)"
+        class="row align-items-center justify-content-center">
+    <div class="col-md-2 pt-3" >
+      <div class="form-group">
+        <select id="inputState" class="form-control" formControlName="semester">
+          <option selected value={{0}}>select semester</option>
+          <option *ngFor="let semesterResponse of semesterResponse"
+                  [value]="semesterResponse.id">{{ semesterResponse.semester }}
+          </option>
+        </select>
+      </div>
+    </div>
+    <div class="col-md-2">
+      <button type="submit" class="btn btn-primary btn-block"><fa-icon class="mr-2" [icon]="faMagnifyingGlass"></fa-icon>Search  </button>
+    </div>
+  </form>
+</div>
+<div class=" w-100 d-flex justify-content-center align-items-center mt-5">
+  <table class="table w-75 table-hover" *ngIf="teachers.length">
+    <thead>
+    <tr class="gradient-custom">
+      <th scope="col">studentId</th>
+      <th scope="col">Name</th>
+      <th scope="col">Email</th>
+      <th scope="col">Semester</th>
+      <th scope="col">ROLE</th>
+
+      <!--      <th scope="col">Options</th>-->
+    </tr>
+    </thead>
+    <tbody class="table-group-divider">
+    <tr *ngFor="let teacher of teachers" >
+      <th scope="row">{{ teacher.id }}</th>
+      <td>{{ teacher.name }}</td>
+      <td>{{ teacher.email }}</td>
+      <td>{{ teacher.semester }}</td>
+      <td *ngFor="let role of teacher.roles">
+        <p *ngIf="role==='ROLE_USER'">Teacher</p>
+<!--        {{ role }}-->
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+<!--TODO do this-->
+<div class="w-100 d-flex justify-content-center pb-5">
+  <div *ngIf="teachers.length" class="pagination">
+    <button class="page-link" (click)="submitSearch(page-1 )" [disabled]="page <= 1">Previous</button>
+    <div class="page-link d-flex h-100 align-items-center justify-content-center ">
+      {{ page }} of {{ Math.ceil(total / limit) }}
+    </div>
+
+    <button class="page-link" (click)="submitSearch(page+1)" [disabled]="page >= total/limit">Next
+    </button>
+  </div>
+</div>
+
+<div *ngIf="!teachers.length && !errorMessage">
+  No students found.
+</div>
+

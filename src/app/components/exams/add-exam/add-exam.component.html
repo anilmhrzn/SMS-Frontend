@@ -8,7 +8,7 @@
 <!--      <a routerLink="/marks/view/marks" href="#">{{ subjectName }}</a>-->
 <!--    </li>-->
     <li class="breadcrumb-item active" aria-current="page">
-      <a routerLink="/exams/new" href="#"><fa-icon class="mr-2" [icon]="faCirclePlus"></fa-icon> Add Marks</a>
+      <a routerLink="/exams/new" href="#"><fa-icon class="mr-2" [icon]="faCirclePlus"></fa-icon> Add Exams</a>
     </li>
   </ol>
 
@@ -33,18 +33,32 @@
              *ngIf="ExamForm.get('date')?.touched && ExamForm.get('date')?.errors?.['required']">date is
         required.</small>
     </div>
-    <div class="col-md-6">
-      <label for="subject" class="form-label"> Subject <span class="text-danger">*</span></label>
-      <select id="subject" formControlName="subject" class="form-control"
-              [ngClass]="{'is-valid':ExamForm.controls['subject'].valid && ExamForm.controls['subject'].touched,
-              'is-invalid':ExamForm.controls['subject'].invalid && ExamForm.controls['subject'].touched}">
-        <option value="">Select subject</option>
-        <option *ngFor="let subject of subjects" [value]="subject.id">{{ subject.name }}</option>
-      </select>
-      <small class="text-danger"
-             *ngIf="ExamForm.get('subject')?.touched && ExamForm.get('subject')?.errors?.['required']">subject is
-        required.</small>
-    </div>
+<!--    <div class="col-md-6">-->
+<!--      <label for="subject" class="form-label"> Subject <span class="text-danger">*</span></label>-->
+<!--      <select id="subject" formControlName="subject" class="form-control"-->
+<!--              [ngClass]="{'is-valid':ExamForm.controls['subject'].valid && ExamForm.controls['subject'].touched,-->
+<!--              'is-invalid':ExamForm.controls['subject'].invalid && ExamForm.controls['subject'].touched}">-->
+<!--        <option value="">Select subject</option>-->
+<!--        <option *ngFor="let subject of subjects" [value]="subject.id">{{ subject.name }}</option>-->
+<!--      </select>-->
+<!--      <small class="text-danger"-->
+<!--             *ngIf="ExamForm.get('subject')?.touched && ExamForm.get('subject')?.errors?.['required']">subject is-->
+<!--        required.</small>-->
+<!--    </div>-->
+        <div class="col-md-6">
+          <label for="semester" class="form-label"> Semester <span class="text-danger">*</span></label>
+          <select id="semester" formControlName="semester" class="form-control"
+                  [ngClass]="{'is-valid':ExamForm.controls['semester'].valid && ExamForm.controls['semester'].touched,
+                  'is-invalid':ExamForm.controls['semester'].invalid && ExamForm.controls['semester'].touched}">
+            <option selected value=''>select semester</option>
+            <option *ngFor="let semesterResponse of semesterResponse"
+                    [value]="semesterResponse.id">{{ semesterResponse.semester }}
+            </option>
+          </select>
+          <small class="text-danger"
+                 *ngIf="ExamForm.get('semester')?.touched && ExamForm.get('semester')?.errors?.['required']">semester is
+            required.</small>
+        </div>
     <div class="col-12 mt-4">
       <span class="text-danger b-2" *ngIf="errorMessage">{{ errorMessage }}</span>
       <br>

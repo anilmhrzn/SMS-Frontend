@@ -15,10 +15,10 @@ export class AllExamServiceService {
   }
 
   getExams(): Observable<ExamList[]> {
-    const token = localStorage.getItem('auth_token'); // Retrieve the token
-    const headers = { 'Authorization': `Bearer ${token}` }; // Prepare the headers
+    // const token = localStorage.getItem('auth_token'); // Retrieve the token
+    // const headers = { 'Authorization': `Bearer ${token}` }; // Prepare the headers
     // const queryParams = `;
-    return this.http.get<ExamList[]>(`${this.apiUrl}/exams`, { headers })
+    return this.http.get<ExamList[]>(`${this.apiUrl}/exams`)
       .pipe(
         catchError(this.handleError)
       );
@@ -32,6 +32,6 @@ export class AllExamServiceService {
 export interface ExamList {
   id: number;
   date: Date;
-  subject: string;
+  semester  : string;
   name: string;
 }

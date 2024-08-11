@@ -9,6 +9,12 @@ export class AllSubjectServiceService {
   private apiUrl = 'http://localhost:8080/api';
 
   constructor(private http: HttpClient) { }
+  getSubjectOfSemester(semesterId: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/subjects-by-semester?semester_id=${semesterId}`)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
   getSubjects(): Observable<any> {
     const token = localStorage.getItem('auth_token'); // Retrieve the token
     const headers = { 'Authorization': `Bearer ${token}` }; // Prepare the headers
@@ -28,12 +34,12 @@ export class AllSubjectServiceService {
       // console.log(error.error.error.status)
       errorMessage = `Error Code: ${error.status}\nMessage: ${error.error.error}`;
     }
-    console.log(error.status)
+    // console.log(error.status)
     return throwError(() => new Error(errorMessage));
   }
 }
 
-export interface SubjectList{
+export interface  SubjectList{
   id: number;
   name: string;
 }

@@ -5,14 +5,23 @@ import {SharedService} from "../../../core/services/sharedService/shared-service
 import {
   FileUploadService
 } from "../../../core/services/fileUploadService/AddMarksFileUpload/file-upload-service.service";
-import {NgForOf, NgIf} from "@angular/common";
+import {NgClass, NgForOf, NgIf} from "@angular/common";
 import {saveAs} from 'file-saver';
 import {MatSnackBar} from "@angular/material/snack-bar";
-import {HttpEventType} from "@angular/common/http";
+import {HttpClient, HttpErrorResponse, HttpEventType} from "@angular/common/http";
 import Swal from "sweetalert2";
 import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 
 import {faDownload, faFile, faSearch} from "@fortawesome/free-solid-svg-icons";
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
+import {
+  AllSemesterResponse,
+  GetAllSemesterService
+} from "../../../core/services/semesterService/getAllSemester/get-all-semester.service";
+import {
+  AllSubjectServiceService, SubjectList
+} from "../../../core/services/subjectsService/allSubjectsService/all-subject-service.service";
+import {catchError, Observable} from "rxjs";
 
 interface UploadResponse {
   message?: string;
@@ -26,7 +35,9 @@ interface UploadResponse {
     RouterLink,
     NgIf,
     NgForOf,
-    FontAwesomeModule
+    FontAwesomeModule,
+    ReactiveFormsModule,
+    NgClass
   ],
   templateUrl: './add-marks-of-specific-subject.component.html',
   styleUrl: './add-marks-of-specific-subject.component.css'
@@ -38,16 +49,29 @@ export class AddMarksOfSpecificSubjectComponent implements OnInit {
   ];
 
   examId: number | undefined;
-  subjectName: String | undefined;
+  subjectName: string | undefined;
   examName: String | undefined;
   date: Date | undefined;
   uploadMessage: UploadResponse = {};
   errorMessage: string | null = null;
+  // addMark: any;
+  // MarkForm: FormGroup;
+  ExamForm: FormGroup;
 
-  constructor(private csvDownloadService: CsvDownloadService, private router: Router,
+  subjects: SubjectList[] = [];
+
+
+  constructor(private fb: FormBuilder,
+              private csvDownloadService: CsvDownloadService, private router: Router,
               private sharedService: SharedService,
+              private allSubjects: AllSubjectServiceService,
               private fileUploadService: FileUploadService,
-              private snackbar: MatSnackBar) {
+              private snackbar: MatSnackBar,
+              private getAllSemester: GetAllSemesterService,
+              private http:HttpClient) {
+    this.ExamForm = this.fb.group({
+      subject: ['', Validators.required],
+    });
   }
 
   ngOnInit() {
@@ -61,18 +85,23 @@ export class AddMarksOfSpecificSubjectComponent implements OnInit {
         this.date = details.examDate;
       }
     });
+    this.loadSubjects()
   }
 
   submitForm(files: FileList | null): void {
+    if(this.ExamForm.invalid){
+      this.ExamForm.markAllAsTouched(); // Mark all controls as touched to show errors
+
+      // alert('invalid')
+      return;
+    }
     if (!files || files.length === 0) {
-      // this.snackbar.
       this.snackbar.open('Please select a file.', 'Close', {duration: 2000});
       return;
     }
 
     const file = files[0];
     if (file.type !== 'text/csv' && !file.name.endsWith('.csv')) {
-      // this.errorMessage = 'Please upload a valid CSV file.';
       this.snackbar.open('Please upload a valid CSV file.', 'Close', {duration: 2000});
 
       return;
@@ -85,6 +114,17 @@ export class AddMarksOfSpecificSubjectComponent implements OnInit {
     };
     reader.readAsText(file);
   }
+  loadSubjects() {
+    console.log(this.subjectName)
+    if(this.subjectName !== undefined){
+     this.allSubjects.getSubjectOfSemester(parseInt(this.subjectName)).subscribe({
+        next: (data) => {
+          this.subjects = data;
+          console.log(data)
+        }
+      }
+    )
+  }}
 
   validateCSV(content: string, file: File): void {
     const lines = content.split('\n');
@@ -103,55 +143,36 @@ export class AddMarksOfSpecificSubjectComponent implements OnInit {
         if (lines[i].trim() === '') {
           continue;
         }
-        // console.log('lines[i]', lines[i]);
         const row = lines[i].split(',').map(value => value.trim());
-        // console.log(lines[i+1])
-        // if (row.length === 1) {
-        //   this.snackbar.open(`Row ${i} does not have exactly two columns.`, 'Close', {duration: 2000});
-        //   return;
-        // }
-
-        // if(row===['']){
-
-        // }
-        // if (row.length !== 2) {
-        //   // this.errorMessage = `Row ${i + 1} does not have exactly two columns.`;
-        //   this.snackbar.open(`Row ${i} does not have exactly two columns.`, 'Close', {duration: 2000});
-        //
-        //   return;
-        // }
-
         const studentID = row[0];
         const marks = row[1];
-
         if (!this.isInteger(studentID) || !this.isInteger(marks)) {
           // this.errorMessage = `Row ${i + 1} contains non-integer values.`;
           this.snackbar.open(`Row ${i + 1} contains non-integer values.`, 'Close', {duration: 2000});
-
           return;
         }
 
         data.push({StudentID: studentID, Marks: marks});
-        // console.log(data)
       }
 
       this.errorMessage = null;
       if (this.examId === undefined) {
         this.snackbar.open(`Please select an exam.`, 'Close', {duration: 2000});
-
-        // alert('Please select an exam.');
         this.router.navigate(['/exams']);
         return;
       }
+      // if(this.MarkForm.valid){
+      //   // console.log(/)
+      //   alert('valie')
+      // }
+      // if(this.MarkForm.value.subject === ''){
+      //   alert('hellr')
+      //   return;
+      // }
       console.log(file)
       let count = 1;
+
       this.fileUploadService.uploadFile(this.examId, file).subscribe(
-        // response => {
-        //   console.log('Data successfully uploaded', response);
-        // },
-        // error => {
-        //   this.errorMessage = `Failed to upload data: ${error.message}`;
-        // }
         {
           next: response => {
             if (response.type === HttpEventType.Response) {

@@ -1,63 +1,85 @@
 <div *ngIf="errorMessage">
-    <div class="alert alert-danger" role="alert">
-        {{ errorMessage }}
-    </div>
+  <div class="alert alert-danger" role="alert">
+    {{ errorMessage }}
+  </div>
 
 </div>
 
 <nav aria-label="breadcrumb ">
   <ol class="breadcrumb bg-transparent">
-    <li class="breadcrumb-item " aria-current="page" >
+    <li class="breadcrumb-item " aria-current="page">
       <a routerLink="/exams" href="#">Exams</a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page" >
+    <li class="breadcrumb-item active" aria-current="page">
       <a routerLink="/exams/add/marks" href="#">Add Marks</a>
     </li>
   </ol>
 
 </nav>
-<div class="d-flex justify-content-center align-items-center flex-column mb-5">
-<p class="text-warning">Format of the csv should be like this otherwise it will not be accepted</p>
+<div class="d-flex justify-content-center align-items-center flex-column mb-2">
+  <p class="text-warning">Format of the csv should be like this otherwise it will not be accepted</p>
 
-<table class="table table-bordered w-75 ">
-  <thead>
-  <tr>
-<!--    <th scope="col">#</th>-->
-    <th scope="col">StudentID</th>
-    <th scope="col">Marks</th>
-<!--    <th scope="col">Handle</th>-->
-  </tr>
-  </thead>
-  <tbody>
-  <tr>
-<!--    <th scope="row">1</th>-->
-    <td>123</td>
-    <td>55</td>
-<!--    <td>s</td>-->
-  </tr>
+  <table class="table table-bordered w-75 ">
+    <thead>
+    <tr>
+      <!--    <th scope="col">#</th>-->
+      <th scope="col">StudentID</th>
+      <th scope="col">Marks</th>
+      <!--    <th scope="col">Handle</th>-->
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <!--    <th scope="row">1</th>-->
+      <td>123</td>
+      <td>55</td>
+      <!--    <td>s</td>-->
+    </tr>
 
-  </tbody>
-</table>
+    </tbody>
+  </table>
 </div>
 <div class="d-flex justify-content-center mb-5">
-<!--  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">-->
-<!--    <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5"/>-->
-<!--    <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708z"/>-->
-<!--  </svg>-->
   <button (click)="downloadCSV()" class="btn btn-secondary text-center">
     <fa-icon class="mr-2" [icon]="faDownload"></fa-icon>
-    Download Format of the CSV </button>
+    Download Format of the CSV
+  </button>
 </div>
-
-<!--<button type="button" class="btn m-2  btn-info" routerLink="/exams">< Back</button>-->
 <div class="d-flex justify-content-center">
-  <form class="w-75">
-    <label for="formFileLg" class="form-label">Please submit <fa-icon [icon]="faFile"></fa-icon> .csv file for adding marks of
-      <strong>{{ examName }}</strong> of Subject
+  <form class="row g-3 w-75 " [formGroup]="ExamForm" (ngSubmit)="submitForm(fileInput.files)">
+    <div class="col-md-6 d-flex flex-column justify-content-between">
+
+    <label for="formFileLg" class="form-label">Please submit
+      <fa-icon [icon]="faFile"></fa-icon>
+      .csv<span class="text-danger">*</span> file for adding marks of
+      <strong>{{ examName }}</strong> of semester
       <strong>{{ subjectName }}</strong> which was held in <strong>{{ date }}</strong>
     </label>
-    <input class="form-control form-control-lg"id="formFileLg" type="file" #fileInput/>
-    <button type="button" class="btn btn-success mt-3" (click)="submitForm(fileInput.files)">Submit</button>
+    <input class="form-control form-control-lg" id="formFileLg" type="file" #fileInput/>
+    </div>
+    <div class="col-md-6 d-flex flex-column justify-content-between ">
+      <label for="subject" class="form-label"> Subject <span class="text-danger">*</span></label>
+      <select id="subject" formControlName="subject" class="form-control form-control-lg"
+              [ngClass]="{'is-valid':ExamForm.controls['subject'].valid && ExamForm.controls['subject'].touched,
+                  'is-invalid':ExamForm.controls['subject'].invalid && ExamForm.controls['subject'].touched}">
+        <option selected value=''>Select subject</option>
+        <option *ngFor="let subject of subjects" [value]="subject.id">{{ subject.name }}</option>
+      </select>
+      <small class="text-danger"
+             *ngIf="ExamForm.get('subject')?.touched && ExamForm.get('subject')?.errors?.['required']">subject is
+        required.</small>
+    </div>
+    <!--    <button type="button" class="btn btn-success mt-3" (click)="submitForm(fileInput.files)">Submit</button>-->
+    <div class="col-12 mt-4">
+      <span class="text-danger b-2" *ngIf="errorMessage">{{ errorMessage }}</span>
+      <br>
+      <br>
+
+      <button type="submit" class="btn btn-primary">
+        Submit
+      </button>
+    </div>
+
   </form>
 
 </div>
@@ -66,12 +88,12 @@
 <!--  <div class="spinner-border text-primary" role="status">-->
 <!--  </div>-->
 <!--</div>-->
-  <!--<div *ngIf="uploadMessage.message || (uploadMessage.error && uploadMessage.error.length > 0)"-->
-  <!--     class="alert alert-danger fixed-bottom" role="alert">-->
-  <!--  <div *ngIf="uploadMessage.message">{{ uploadMessage.message }} but</div>-->
-  <!--  <ul *ngIf="uploadMessage.error && uploadMessage.error.length > 0">-->
-  <!--    <li *ngFor="let error of uploadMessage.error">{{ error.row }}: {{ error.reason }}</li>-->
-  <!--  </ul>-->
-  <!--</div>-->
+<!--<div *ngIf="uploadMessage.message || (uploadMessage.error && uploadMessage.error.length > 0)"-->
+<!--     class="alert alert-danger fixed-bottom" role="alert">-->
+<!--  <div *ngIf="uploadMessage.message">{{ uploadMessage.message }} but</div>-->
+<!--  <ul *ngIf="uploadMessage.error && uploadMessage.error.length > 0">-->
+<!--    <li *ngFor="let error of uploadMessage.error">{{ error.row }}: {{ error.reason }}</li>-->
+<!--  </ul>-->
+<!--</div>-->
 
 

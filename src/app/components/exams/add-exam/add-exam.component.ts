@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Router, RouterLink} from "@angular/router";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {NgClass, NgForOf, NgIf} from "@angular/common";
 import {
   AllSubjectServiceService, SubjectList
@@ -10,6 +10,10 @@ import {AddExamServiceService} from "../../../core/services/examservice/addExamS
 import {AlertService} from "../../../core/services/alerts/alert-service.service";
 import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 import {faCirclePlus} from "@fortawesome/free-solid-svg-icons";
+import {
+  AllSemesterResponse,
+  GetAllSemesterService
+} from "../../../core/services/semesterService/getAllSemester/get-all-semester.service";
 
 @Component({
   selector: 'app-add-exam',
@@ -29,26 +33,41 @@ export class AddExamComponent implements OnInit {
   ExamForm: FormGroup;
   errorMessage: string = '';
   subjects: SubjectList[] = [];
+  semesterResponse: AllSemesterResponse[] = [];
 
   constructor(private fb: FormBuilder,
               private http: HttpClient,
               private allSubjects: AllSubjectServiceService,
               private addExamService: AddExamServiceService,
               private router: Router,
-              private alertService: AlertService
-  ) {
+              private alertService: AlertService,
+              private getAllSemester: GetAllSemesterService) {
     this.ExamForm = this.fb.group({
       name: ['', Validators.required],
       date: ['', Validators.required],
-      subject: ['', Validators.required]
+      semester: ['', Validators.required]
     });
   }
 
   ngOnInit(): void {
     this.loadSubjects();
+    this.loadSemester();
+  }
+  loadSemester() {
+    this.getAllSemester.loadAllSemester().subscribe({
+      next: (data: AllSemesterResponse[]) => {
+        this.semesterResponse = data;
+        console.log(this.semesterResponse)
+      },
+      error: (error: HttpErrorResponse) => {
+        console.log(error)
+      }
+    });
   }
 
+
   loadSubjects() {
+
     this.allSubjects.getSubjects().subscribe({
         next: (data) => {
           this.subjects = JSON.parse(data);
@@ -62,6 +81,8 @@ export class AddExamComponent implements OnInit {
 
   onSubmit() {
     console.log(this.ExamForm.value);
+    console.log(this.ExamForm.value.semester)
+    // return;
     if (this.ExamForm.valid) {
       this.addExamService.addExam(this.ExamForm).subscribe({
         next: (data) => {
@@ -73,10 +94,10 @@ export class AddExamComponent implements OnInit {
               this.alertService.setAlertColor('alert-success');
             }
           );
-        },
-        error: (error) => {
-          this.errorMessage = error;
         }
+        // error: (error) => {
+        //   this.errorMessage = error;
+        // }
       });
       // // this.http.post('http://localhost:8080/exams', this.ExamForm.value).subscribe({
       // //   next: (data) => {
