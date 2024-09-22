@@ -13,8 +13,9 @@ import {AuthService} from "../../../core/services/authService/auth.service";
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import Swal from "sweetalert2";
 import {FaIconComponent, FontAwesomeModule} from "@fortawesome/angular-fontawesome";
-import {faMagnifyingGlass,faUserPlus} from "@fortawesome/free-solid-svg-icons";
+import {faEye, faMagnifyingGlass, faTrash, faUserPlus} from "@fortawesome/free-solid-svg-icons";
 import {MatTooltip} from "@angular/material/tooltip";
+
 @Component({
   selector: 'app-student',
   standalone: true,
@@ -32,8 +33,8 @@ import {MatTooltip} from "@angular/material/tooltip";
   styleUrls: ['./student.component.css'],
 })
 export class StudentComponent implements OnInit {
-  faMagnifyingGlass=faMagnifyingGlass;
-  faUserPlus=faUserPlus;
+  faMagnifyingGlass = faMagnifyingGlass;
+  faUserPlus = faUserPlus;
   students: Student[] = [];
   total: number = 0;
   page: number = 1;
@@ -89,4 +90,39 @@ export class StudentComponent implements OnInit {
 
 
   protected readonly Math = Math;
+
+    deleteStudent(id: number) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You will not be able to recover this student!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'No, keep it'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.studentService.deleteStudent(id).subscribe({
+          next: (data) => {
+            Swal.fire(
+              'Deleted!',
+              'Student has been deleted.',
+              'success'
+            );
+            this.onSearchSubmit(1);
+          },
+          error: (error) => {
+            Swal.fire(
+              'Error!',
+              'Student has not been deleted.',
+              'error'
+            ).then(r => {});
+          }
+        });
+      }
+    });
+
+    }
+
+  protected readonly faEye = faEye;
+  protected readonly faTrash = faTrash;
 }

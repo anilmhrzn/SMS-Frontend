@@ -18,6 +18,7 @@ import {PageNotFoundComponent} from "./components/page-not-found/page-not-found.
 import {StudentProfileComponent} from "./components/students/student-profile/student-profile.component";
 import {hasRoleGuard} from "./core/guards/HasRole/has-role.guard";
 import {GetUsersComponent} from "./components/users/get-users/get-users.component";
+import {AddTeacherComponentComponent} from "./components/users/add-teacher-component/add-teacher-component.component";
 
 export const routes: Routes = [
   {path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard]},
@@ -26,6 +27,7 @@ export const routes: Routes = [
   {path: 'student/:id/edit', component: AddstudentComponent, canActivate: [AuthGuard,hasRoleGuard],data: {ROLE_REQUIRED: 'ROLE_ADMIN'}},
   {path: 'students/add', component: AddstudentComponent, canActivate: [AuthGuard,hasRoleGuard],data: {ROLE_REQUIRED: 'ROLE_ADMIN'}},
   {path: 'teachers', component: GetUsersComponent, canActivate: [AuthGuard,hasRoleGuard],data: {ROLE_REQUIRED: 'ROLE_ADMIN'}},
+  {path: 'teachers/add', component: AddTeacherComponentComponent, canActivate: [AuthGuard,hasRoleGuard],data: {ROLE_REQUIRED: 'ROLE_ADMIN'}},
   {path: 'students-of-user', component: StudentOfUserComponent, canActivate: [AuthGuard]},
   {path: 'login', component: LoginComponent,data:{showNavbar:false}},
   {path: 'exams', component: ExamsComponent, canActivate: [AuthGuard]},

@@ -43,7 +43,7 @@ interface UploadResponse {
   styleUrl: './add-marks-of-specific-subject.component.css'
 })
 export class AddMarksOfSpecificSubjectComponent implements OnInit {
-  faDownload=faDownload;
+  faDownload = faDownload;
   data = [
     {StudentID: 1, Marks: 55},
   ];
@@ -54,9 +54,7 @@ export class AddMarksOfSpecificSubjectComponent implements OnInit {
   date: Date | undefined;
   uploadMessage: UploadResponse = {};
   errorMessage: string | null = null;
-  // addMark: any;
-  // MarkForm: FormGroup;
-  ExamForm: FormGroup;
+  MarkForm: FormGroup;
 
   subjects: SubjectList[] = [];
 
@@ -68,8 +66,8 @@ export class AddMarksOfSpecificSubjectComponent implements OnInit {
               private fileUploadService: FileUploadService,
               private snackbar: MatSnackBar,
               private getAllSemester: GetAllSemesterService,
-              private http:HttpClient) {
-    this.ExamForm = this.fb.group({
+              private http: HttpClient) {
+    this.MarkForm = this.fb.group({
       subject: ['', Validators.required],
     });
   }
@@ -89,8 +87,8 @@ export class AddMarksOfSpecificSubjectComponent implements OnInit {
   }
 
   submitForm(files: FileList | null): void {
-    if(this.ExamForm.invalid){
-      this.ExamForm.markAllAsTouched(); // Mark all controls as touched to show errors
+    if (this.MarkForm.invalid) {
+      this.MarkForm.markAllAsTouched(); // Mark all controls as touched to show errors
 
       // alert('invalid')
       return;
@@ -114,17 +112,19 @@ export class AddMarksOfSpecificSubjectComponent implements OnInit {
     };
     reader.readAsText(file);
   }
+
   loadSubjects() {
     console.log(this.subjectName)
-    if(this.subjectName !== undefined){
-     this.allSubjects.getSubjectOfSemester(parseInt(this.subjectName)).subscribe({
-        next: (data) => {
-          this.subjects = data;
-          console.log(data)
+    if (this.subjectName !== undefined) {
+      this.allSubjects.getSubjectOfSemester(parseInt(this.subjectName)).subscribe({
+          next: (data) => {
+            this.subjects = data;
+            console.log(data)
+          }
         }
-      }
-    )
-  }}
+      )
+    }
+  }
 
   validateCSV(content: string, file: File): void {
     const lines = content.split('\n');
@@ -133,7 +133,7 @@ export class AddMarksOfSpecificSubjectComponent implements OnInit {
       const headers = lines[0].split(',').map(header => header.trim());
       if (headers.length !== 2 || headers[0] !== 'StudentID' || headers[1] !== 'Marks') {
         // this.errorMessage = 'CSV file must have exactly two headers: StudentID and Marks.';
-        this.snackbar.open('CSV file must have exactly two headers: StudentID and Marks.', 'Close' );
+        this.snackbar.open('CSV file must have exactly two headers: StudentID and Marks.', 'Close');
 
         return;
       }
@@ -172,9 +172,10 @@ export class AddMarksOfSpecificSubjectComponent implements OnInit {
       console.log(file)
       let count = 1;
 
-      this.fileUploadService.uploadFile(this.examId, file).subscribe(
+      this.fileUploadService.uploadFile(this.examId,this.MarkForm.value.subject, file).subscribe(
         {
           next: response => {
+            console.log('vaxa')
             if (response.type === HttpEventType.Response) {
               if (response.status === 200 && response.body) {
                 this.uploadMessage = response.body;
@@ -197,6 +198,7 @@ export class AddMarksOfSpecificSubjectComponent implements OnInit {
 
           },
           error: error => {
+            console.log('error');
             this.errorMessage = `Failed to upload data: ${error.message}`;
           }
         }

@@ -16,11 +16,10 @@ export class ViewMarksByExamIdService {
 
   }
 
-  viewMarksByExamId(examId: any) {
-
+  viewMarksByExamId(examId: any,subId:any) {
     // const token = localStorage.getItem('auth_token');
     // const headers = {'Authorization': `${token}`}; // Prepare the headers with the token
-    return this.http.post(`${this.apiUrl}/exams/view/marks`, {exam_id:examId})
+    return this.http.post(`${this.apiUrl}/exams/view/marks`, {exam_id:examId,subject_id:subId});
 
   }
 }

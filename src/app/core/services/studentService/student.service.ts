@@ -39,6 +39,15 @@ export class StudentService {
     }
     return throwError(() => new Error(error.error.message));
   }
+
+  deleteStudent(id: number) {
+    let body = {id:id}
+
+    return this.http.post(`${this.apiUrl}/delete-student`, body)
+      .pipe(
+        catchError(error => this.handleError(error))
+      );
+  }
 }
 
 export interface Student {

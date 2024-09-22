@@ -36,17 +36,19 @@
 <div class=" w-100 d-flex justify-content-center align-items-center mt-5">
   <table class="table w-75 table-hover" *ngIf="students.length">
     <thead>
-    <tr class="gradient-custom">
+    <tr class="gradient-custom text-center">
       <th scope="col">studentId</th>
       <th scope="col">Name</th>
       <th scope="col">Email</th>
       <th scope="col">Phone</th>
+      <th scope="col" >Option</th>
+
 
       <!--      <th scope="col">Options</th>-->
     </tr>
     </thead>
     <tbody class="table-group-divider">
-    <tr *ngFor="let student of students" (click)="studentProfile(student.id)" matTooltip="click to view student info">
+    <tr *ngFor="let student of students" >
       <th scope="row">{{ student.id }}</th>
       <td>{{ student.name }}</td>
       <td>{{ student.email }}</td>
@@ -56,6 +58,14 @@
 
 
         </div>
+      </td>
+      <td >
+<div class="d-flex justify-content-between ">
+
+        <button  class="btn btn-primary"  (click)="studentProfile(student.id)" matTooltip="click to view student info"><fa-icon class="mr-2" [icon]="faEye"></fa-icon> View</button>
+        <button  class="btn btn-danger" *appHasRole="'ROLE_ADMIN'" (click)="deleteStudent(student.id)" matTooltip="click to delete student info"><fa-icon class="mr-2" [icon]="faTrash"></fa-icon>Delete</button>
+</div>
+
       </td>
     </tr>
 

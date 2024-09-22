@@ -1,0 +1,44 @@
+<!--<p>add-teacher-component works!</p>-->
+<h2 class="text-center mt-2">Add Exam</h2>
+<div class="d-flex justify-content-center align-items-center w-100 v-100  mt-5">
+
+  <form class="row g-3 w-75 " [formGroup]="TeacherForm" (ngSubmit)="onSubmit()">
+    <div class="col-md-6">
+      <label for="name" class="form-label">Name <span class="text-danger">*</span></label>
+      <input type="text" class="form-control" id="name" formControlName="name" [ngClass]="{'is-valid':TeacherForm.controls['name'].valid && TeacherForm.controls['name'].touched,
+      'is-invalid':TeacherForm.controls['name'].invalid && TeacherForm.controls['name'].touched}">
+      <small class="text-danger"
+             *ngIf="TeacherForm.get('name')?.touched && TeacherForm.get('name')?.errors?.['required']">Name is
+        required.</small>
+    </div>
+    <div class="col-md-6">
+      <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
+      <input type="email" class="form-control" id="email" formControlName="email" [ngClass]="{'is-valid':TeacherForm.controls['email'].valid && TeacherForm.controls['email'].touched,
+      'is-invalid':TeacherForm.controls['email'].invalid && TeacherForm.controls['email'].touched}">
+      <small class="text-danger"
+             *ngIf="TeacherForm.get('email')?.touched && TeacherForm.get('email')?.errors?.['required']">Name is
+        required.</small>
+    </div>
+    <div class="col-md-6">
+      <label for="semester" class="form-label"> Semester <span class="text-danger">*</span></label>
+      <select id="semester" formControlName="semester" class="form-control"
+              [ngClass]="{'is-valid':TeacherForm.controls['semester'].valid && TeacherForm.controls['semester'].touched,
+                  'is-invalid':TeacherForm.controls['semester'].invalid && TeacherForm.controls['semester'].touched}">
+        <option selected value=''>select semester</option>
+        <option *ngFor="let semesterResponse of semesterResponse"
+                [value]="semesterResponse.id">{{ semesterResponse.semester }}
+        </option>
+      </select>
+      <small class="text-danger"
+             *ngIf="TeacherForm.get('semester')?.touched && TeacherForm.get('semester')?.errors?.['required']">semester is
+        required.</small>
+    </div>
+    <div class="col-md-6 ">
+      <button type="submit" class="btn btn-primary mt-4">
+        Submit
+      </button>
+    </div>
+<!--    </div>-->
+  </form>
+</div>
+

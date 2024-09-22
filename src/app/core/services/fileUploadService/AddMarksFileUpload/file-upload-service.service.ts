@@ -11,10 +11,12 @@ export class FileUploadService {
 
   constructor(private http: HttpClient) {}
 
-  uploadFile(examId: number, file: File) {
+  uploadFile(examId: number,subjectId:number, file: File) {
+    console.log(examId,subjectId);
     const formData = new FormData();
     formData.append('csv_file', file, file.name);
     formData.append('exam_id', examId.toString());
+    formData.append('subject_id', subjectId.toString());
 
     return this.http.post(`${this.apiUrl}/add/marks/of-exam`, formData, {
       reportProgress: true,

@@ -8,9 +8,9 @@
 <!--  </div>-->
 <!--</div>-->
 <div class="container ">
-  <div class="row mt-4 ">
-    <div class="col-lg-4 col-md-6 col-12 d-flex justify-content-center">
-      <div class="card" style="width: 18rem;">
+  <div class="row mt-4  mb-4">
+    <div class="col-lg-4  col-md-6 col-12 d-flex justify-content-center" [@scaleOnHover]="hoverStates['noOfStudents'] ? 'hover' : 'normal'" (mouseenter)="hoverStates['noOfStudents'] = true" (mouseleave)="hoverStates['noOfStudents'] = false">
+      <div class="card" style="width: 18rem;" >
         <div class="card-body d-flex flex-column align-items-center justify-content-between">
           <h5 class="card-title">No of students</h5>
           <fa-icon [icon]="faUserGraduate" size="3x"></fa-icon>
@@ -19,8 +19,12 @@
         </div>
       </div>
     </div>
-    <div class="col-lg-4 col-md-6 col-12 d-flex justify-content-center">
-      <div class="card" style="width: 18rem;">
+<!--    <div class="col-lg-4 col-md-6 col-12 d-flex justify-content-center" >-->
+<!--    <div class="col-lg-4 col-md-6 col-12 d-flex justify-content-center" [@scaleOnHover]="hover ? 'hover' : 'normal'" (mouseenter)="hover = true" (mouseleave)="hover = false">-->
+    <div class="col-lg-4 col-md-6 col-12 d-flex justify-content-center" [@scaleOnHover]="hoverStates['failedStudents'] ? 'hover' : 'normal'" (mouseenter)="hoverStates['failedStudents'] = true" (mouseleave)="hoverStates['failedStudents'] = false">
+
+
+    <div class="card" style="width: 18rem;">
         <div class="card-body d-flex flex-column align-items-center justify-content-between">
           <h5 class="card-title">no of failed students in latest exam</h5>
           <fa-icon [icon]="faUsersSlash" size="3x"></fa-icon>
@@ -31,49 +35,52 @@
         </div>
       </div>
     </div>
-    <div class="col-lg-4 col-md-6 col-12 d-flex justify-content-center">
-      <div class="card" style="width: 18rem;">
+<!--    <div class="col-lg-4 col-md-6 col-12 d-flex justify-content-center" [@scaleOnHover]="hover ? 'hover' : 'normal'"-->
+<!--         (mouseenter)="hover = true" (mouseleave)="hover = false">-->
+    <div class="col-lg-4 col-md-6 col-12 d-flex justify-content-center" [@scaleOnHover]="hoverStates['teachers'] ? 'hover' : 'normal'" (mouseenter)="hoverStates['teachers'] = true" (mouseleave)="hoverStates['teachers'] = false">
+
+    <div class="card" style="width: 18rem;">
         <div class="card-body d-flex flex-column align-items-center justify-content-between">
           <h5 class="card-title">No of teachers</h5>
-            <fa-icon [icon]="faChalkboardTeacher" size="3x"></fa-icon>
-          <p class="card-text">10</p>
-          <a href="#" class="btn btn-primary">#</a>
+          <fa-icon [icon]="faChalkboardTeacher" size="3x"></fa-icon>
+          <p class="card-text">{{ countOfTeacher }}</p>
+          <a routerLink="/teachers" href="#" class="btn btn-primary">View Teachers</a>
         </div>
       </div>
     </div>
   </div>
   <div class="row mt-4 ">
-    <div class="col-lg-4 col-md-6 col-12 d-flex justify-content-center">
+    <div class="col-lg-4 col-md-6 col-12 d-flex justify-content-center" [@scaleOnHover]="hoverStates['noOfComingExam'] ? 'hover' : 'normal'" (mouseenter)="hoverStates['noOfComingExam'] = true" (mouseleave)="hoverStates['noOfComingExam'] = false">
       <div class="card" style="width: 18rem;">
         <div class="card-body d-flex flex-column align-items-center justify-content-between">
           <h5 class="card-title">No of up coming exams</h5>
-            <fa-icon [icon]="faCalendarCheck" size="3x"></fa-icon>
+          <fa-icon [icon]="faCalendarCheck" size="3x"></fa-icon>
           <p class="card-text">{{ noOfComingExamsResponse.noOfComingExams }}</p>
-<!--          <a href="#" class="btn btn-primary">view all students</a>-->
+          <!--          <a href="#" class="btn btn-primary">view all students</a>-->
           <a routerLink="/exams" href="#" class="btn btn-primary">Go to exam list</a>
 
         </div>
       </div>
     </div>
-<!--    <div class="col-lg-4 col-md-6 col-12 d-flex justify-content-center">-->
-<!--      <div class="card" style="width: 18rem;">-->
-<!--        <div class="card-body d-flex flex-column align-items-center justify-content-between">-->
-<!--          <h5 class="card-title">no of failed students in latest exam</h5>-->
-<!--          <p class="card-text">Subject:{{ noOfFailedStudentsInLatestExamResponse.subject }}</p>-->
-<!--          <p class="card-text">{{ noOfFailedStudentsInLatestExamResponse.failed_students_count }}</p>-->
-<!--          <a routerLink="/exams" href="#" class="btn btn-primary">Go to exam list</a>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--    <div class="col-lg-4 col-md-6 col-12 d-flex justify-content-center">-->
-<!--      <div class="card" style="width: 18rem;">-->
-<!--        <div class="card-body d-flex flex-column align-items-center justify-content-between">-->
-<!--          <h5 class="card-title">No of teachers</h5>-->
-<!--          <p class="card-text">10</p>-->
-<!--          <a href="#" class="btn btn-primary">#</a>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
+    <!--    <div class="col-lg-4 col-md-6 col-12 d-flex justify-content-center">-->
+    <!--      <div class="card" style="width: 18rem;">-->
+    <!--        <div class="card-body d-flex flex-column align-items-center justify-content-between">-->
+    <!--          <h5 class="card-title">no of failed students in latest exam</h5>-->
+    <!--          <p class="card-text">Subject:{{ noOfFailedStudentsInLatestExamResponse.subject }}</p>-->
+    <!--          <p class="card-text">{{ noOfFailedStudentsInLatestExamResponse.failed_students_count }}</p>-->
+    <!--          <a routerLink="/exams" href="#" class="btn btn-primary">Go to exam list</a>-->
+    <!--        </div>-->
+    <!--      </div>-->
+    <!--    </div>-->
+    <!--    <div class="col-lg-4 col-md-6 col-12 d-flex justify-content-center">-->
+    <!--      <div class="card" style="width: 18rem;">-->
+    <!--        <div class="card-body d-flex flex-column align-items-center justify-content-between">-->
+    <!--          <h5 class="card-title">No of teachers</h5>-->
+    <!--          <p class="card-text">10</p>-->
+    <!--          <a href="#" class="btn btn-primary">#</a>-->
+    <!--        </div>-->
+    <!--      </div>-->
+    <!--    </div>-->
   </div>
 
 </div>

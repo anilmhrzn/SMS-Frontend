@@ -13,12 +13,13 @@ import {
   getNoOfComingExamsResponse,
   GetNoOfComingExamsService
 } from "../../core/services/examservice/getNoOfComingExams/get-no-of-coming-exams.service";
-import {animate, style, transition, trigger} from "@angular/animations";
+import {animate, state, style, transition, trigger} from "@angular/animations";
 import {AlertService} from "../../core/services/alerts/alert-service.service";
 import {HasRoleDirective} from "../../core/derectives/has-role.directive";
 import {catchError, map, of} from "rxjs";
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
 import {faCalendarCheck, faChalkboardTeacher, faUserGraduate, faUsersSlash} from "@fortawesome/free-solid-svg-icons";
+import {CountAllTeacherService} from "../../core/services/UserService/CountAllTeacherService/count-all-teacher.service";
 
 @Component({
   selector: 'app-dashboard',
@@ -41,7 +42,15 @@ import {faCalendarCheck, faChalkboardTeacher, faUserGraduate, faUsersSlash} from
       transition(':leave', [
         animate('300ms ease-in', style({opacity: 0, transform: 'translateY(-100%)'}))
       ])
+    ]),
+
+
+    trigger('scaleOnHover', [
+      state('normal', style({ transform: 'scale(1)' })),
+      state('hover', style({ transform: 'scale(1.1)' })),
+      transition('normal <=> hover', animate('300ms ease-in-out'))
     ])
+
   ]
 })
 export class DashboardComponent implements OnInit {
@@ -55,19 +64,23 @@ export class DashboardComponent implements OnInit {
   showAlert: boolean = false;
   alertMessage: string = '';
   alertColor: string = 'alert-danger';
+  countOfTeacher: any;
+  // hover: boolean = false; // Add this line
+  hoverStates: { [key: string]: boolean } = {}; // Add this line
 
   constructor(private noOfStudentsService: ViewNoOfStudentsService,
               private noOfFailedStudentsInLatestExamService: NoOfFailedStudentsInLatestExamService,
               private getNoOfComingExamsService: GetNoOfComingExamsService,
-              private alertService: AlertService
+              private alertService: AlertService,
+              private countOfAllTeacherService: CountAllTeacherService
   ) {
   }
 
   ngOnInit(): void {
     this.loadNoOfStudents();
-    console.log('eta pugyo')
-    this.loadNoOfFailedStudentsInLatestExam();
+    // this.loadNoOfFailedStudentsInLatestExam();
     this.loadNoOfComingExams();
+    this.loadTeachers();
     this.alertService.getShowAlert().subscribe(show => {
       this.alertService.getAlertMessage().subscribe(message => {
         this.alertMessage = message;
@@ -87,17 +100,25 @@ export class DashboardComponent implements OnInit {
 
   loadNoOfStudents() {
     this.noOfStudentsService.getNofStudents().subscribe((data) => {
-      this.noOfStudentsResponse = data;
-    }
-    )
-  }
-
-  loadNoOfFailedStudentsInLatestExam() {
-    this.noOfFailedStudentsInLatestExamService.getNoOfFailedStudentsInLatestExam().subscribe((data) => {
-        this.noOfFailedStudentsInLatestExamResponse = data;
+        this.noOfStudentsResponse = data;
       }
     )
   }
+
+  loadTeachers() {
+    this.countOfAllTeacherService.countOfAllTeachers().subscribe((data) => {
+
+      this.countOfTeacher = data;
+      console.log(this.countOfTeacher);
+    })
+  }
+
+  // loadNoOfFailedStudentsInLatestExam() {
+  //   this.noOfFailedStudentsInLatestExamService.getNoOfFailedStudentsInLatestExam().subscribe((data) => {
+  //       this.noOfFailedStudentsInLatestExamResponse = data;
+  //     }
+  //   )
+  // }
 
   loadNoOfComingExams() {
     this.getNoOfComingExamsService.getNoOfComingExamsService().subscribe((data) => {

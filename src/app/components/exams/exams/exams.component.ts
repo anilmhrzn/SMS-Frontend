@@ -27,6 +27,9 @@ import {
   GetAllSemesterService
 } from "../../../core/services/semesterService/getAllSemester/get-all-semester.service";
 import {HttpErrorResponse} from "@angular/common/http";
+import {
+  SemesterOfUserResponse, ViewSemesterOfUserService
+} from "../../../core/services/UserService/ViewSemesterOfUserService/view-semester-of-user.service";
 
 @Component({
   selector: 'app-exams',
@@ -78,7 +81,7 @@ export class ExamsComponent implements OnInit {
               private router: Router,
               private authService: AuthService,
               private cdr: ChangeDetectorRef,
-              private viewSubjectOfUserServiceService: ViewSubjectOfUserService,
+              private viewSemesterOfUserService:ViewSemesterOfUserService,
               private getAllSemester: GetAllSemesterService,
   ) {
     this.ExamSearchForm = this.fb.group({
@@ -111,11 +114,13 @@ export class ExamsComponent implements OnInit {
     // this.loadSubjects();
     this.loadSemester()
     if (this.authService.hasRole('ROLE_USER')) {
-      this.viewSubjectOfUserServiceService.subjectOfUser().subscribe({
-        next: (data: SubjectOfUserResponse) => {
+      console.log('this is user')
+      this.viewSemesterOfUserService.semesterOfUser().subscribe({
+        next: (data: SemesterOfUserResponse) => {
           this.ExamSearchForm.patchValue({
-            subject: data.id
+            semester: data.userSemesters
           })
+          console.log(data.userSemesters)
           this.onSearchSubmit(this.page);
         }
       })
@@ -124,26 +129,7 @@ export class ExamsComponent implements OnInit {
     }
   }
 
-  loadSubjects() {
-    this.allSubjects.getSubjects().subscribe({
-        next: (data) => {
-          this.subjects = JSON.parse(data);
-        },
-        error: (error) => {
-          // if(error.status == '401'){
-          //   // log()
-          //   console.log('hello');
-          // }
-          // console.log('dsjklfaklsdjflsdjkflds')
-          // console.log(error)
-          console.log('Error fetching students:');
-          this.router.navigate(['/login']).then()
-          this.errorMessage = error.message;
-          this.errorMessage = error;
-        }
-      }
-    )
-  }
+
   loadSemester() {
     this.getAllSemester.loadAllSemester().subscribe({
       next: (data: AllSemesterResponse[]) => {
